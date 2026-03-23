@@ -17,7 +17,7 @@
         <section class="page-header">
             <div class="container">
                 <div class="section-label">Inventaire complet</div>
-                <h1 class="section-title">L'ARSENAL <span class="text-accent">GHOST OPS</span></h1>
+                <h1 class="section-title">L'ARSENAL <span class="text-accent">ADA</span></h1>
                 <p class="header-sub">&gt; 48 PRODUITS DISPONIBLES // LIVRAISON EXPRESS 48H</p>
             </div>
         </section>
