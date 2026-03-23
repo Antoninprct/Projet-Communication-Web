@@ -1,5 +1,5 @@
 <?php
-$db_file = __DIR__ . '../DB/backabase.db';
+$db_file = __DIR__ . '/../DB/bakabase.db';
 
 try {
     $pdo = new PDO("sqlite:" . $db_file);
