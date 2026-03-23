@@ -37,14 +37,14 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE INDEX IF NOT EXISTS idx_products_nom ON products(nom);
 
 -- =========================
--- PRODUITS : AUTRE
+-- AUTRE
 -- Toutes les armes ne rentrant pas dans une catégorie précise
 -- =========================
 INSERT INTO products (nom, description, prix, stock, category) VALUES
 ('bazooka', 'pas au dessus de 2 joule par contre', 500.99, 1, 'Autre');
 
 -- =========================
--- PRODUITS : FUSILS D'ASSAUT
+-- FUSILS D'ASSAUT
 -- =========================
 INSERT INTO products (nom, description, prix, stock, category) VALUES
 ('ak 47', 'tire tres fort', 299.99, 10, 'Fusil d''assaut'),
@@ -52,7 +52,7 @@ INSERT INTO products (nom, description, prix, stock, category) VALUES
 ('famas', 'ça c un vrai', 2229.99, 50, 'Fusil d''assaut');
 
 -- =========================
--- PRODUITS : EQUIPEMENTS
+-- EQUIPEMENTS
 -- Tout ce qui est accessoires / gear
 -- =========================
 INSERT INTO products (nom, description, prix, stock, category) VALUES
@@ -68,21 +68,21 @@ VALUES
 ('AK-105 FULL METAL', '', 319, NULL, 8, 'AEG', 'aeg', 4, 41, 'STOCK LIMITE', 0);
 
 -- =========================
--- PRODUITS FRONTEND : PISTOLETS GBB
+-- PISTOLETS 
 -- =========================
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
 VALUES 
 ('G17 GEN5 GBB', '', 159, 199, 10, 'Pistolet GBB', 'gbb', 4, 87, '-20%', 1);
 
 -- =========================
--- PRODUITS FRONTEND : SNIPERS
+-- SNIPERS
 -- =========================
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
 VALUES 
 ('VSR-10 SNIPER', '', 399, NULL, 5, 'Fusil de precision', 'sniper', 5, 53, 'NOUVEAU', 0);
 
 -- =========================
--- PRODUITS FRONTEND : EQUIPEMENTS
+-- EQUIPEMENTS
 -- =========================
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
 VALUES 
