@@ -71,7 +71,7 @@ const products = [
         tag: "PROMO",
         promo: true
     }
- 
+
 ];
 
 let currentFilter = "all";
