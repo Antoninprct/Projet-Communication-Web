@@ -10,5 +10,5 @@ CREATE INDEX IF NOT EXISTS idx_user_nom ON user(nom);
 
 
 INSERT INTO user (nom, mot_de_passe, role) VALUES ('antoine', '1234', 'admin');
-INSERT INTO user (nom, mot_de_passe, role) VALUES ('bob',   'password', 'user');
-INSERT INTO user (nom, mot_de_passe, role) VALUES ('carol', 'aaaaaaaa', 'user');
+INSERT INTO user (nom, mot_de_passe, role) VALUES ('bob',   'password', 'client');
+INSERT INTO user (nom, mot_de_passe, role) VALUES ('carol', 'aaaaaaaa', 'client');
