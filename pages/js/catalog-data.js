@@ -76,17 +76,15 @@
         return window.APP_BASE_PATH && window.APP_BASE_PATH !== "/" ? window.APP_BASE_PATH : "";
     }
 
-    function buildProductsUrl(pathSuffix, withFrontController) {
+    function buildProductsUrl(pathSuffix) {
         const basePath = getBasePath();
-        const prefix = withFrontController ? `${basePath}/backend/index.php` : `${basePath}/backend`;
-        return `${prefix}/api/products${pathSuffix}`;
+        return `${basePath}/backend/index.php/api/products${pathSuffix}`;
     }
 
-    function buildReviewsUrl(productId, withFrontController) {
+    function buildReviewsUrl(productId) {
         const basePath = getBasePath();
-        const prefix = withFrontController ? `${basePath}/backend/index.php` : `${basePath}/backend`;
         const id = Number(productId);
-        return `${prefix}/reviews/?id=${encodeURIComponent(String(id))}`;
+        return `${basePath}/backend/index.php/api/reviews/?id=${encodeURIComponent(String(id))}`;
     }
 
     async function fetchJson(url) {
@@ -104,80 +102,38 @@
     }
 
     async function fetchProducts() {
-        const urls = [
-            buildProductsUrl("/", false),
-            buildProductsUrl("/", true)
-        ];
-
-        let lastError = null;
-        for (const url of urls) {
-            try {
-                const payload = await fetchJson(url);
-                if (!payload || !payload.success || !Array.isArray(payload.data)) {
-                    throw new Error("Invalid API payload");
-                }
-
-                return payload.data.map(normalizeProduct);
-            } catch (error) {
-                lastError = error;
-            }
+        const payload = await fetchJson(buildProductsUrl("/"));
+        if (!payload || !payload.success || !Array.isArray(payload.data)) {
+            throw new Error("Invalid API payload");
         }
 
-        throw lastError || new Error("Unable to fetch products");
+        return payload.data.map(normalizeProduct);
     }
 
     async function fetchProductById(productId) {
         const id = Number(productId);
-        const urls = [
-            buildProductsUrl(`/${id}`, false),
-            buildProductsUrl(`/${id}`, true)
-        ];
-
-        let lastError = null;
-        for (const url of urls) {
-            try {
-                const payload = await fetchJson(url);
-                if (!payload || !payload.success || !payload.data) {
-                    throw new Error("Invalid API payload");
-                }
-
-                return normalizeProduct(payload.data);
-            } catch (error) {
-                lastError = error;
-            }
+        const payload = await fetchJson(buildProductsUrl(`/${id}`));
+        if (!payload || !payload.success || !payload.data) {
+            throw new Error("Invalid API payload");
         }
 
-        throw lastError || new Error("Unable to fetch product");
+        return normalizeProduct(payload.data);
     }
 
     async function fetchReviewsByProductId(productId) {
         const id = Number(productId);
-        const urls = [
-            buildReviewsUrl(id, false),
-            buildReviewsUrl(id, true)
-        ];
-
-        let lastError = null;
-        for (const url of urls) {
-            try {
-                const payload = await fetchJson(url);
-                if (!payload || !payload.success || !Array.isArray(payload.data)) {
-                    throw new Error("Invalid reviews payload");
-                }
-
-                return payload.data.map((review) => ({
-                    id: Number(review.id ?? 0),
-                    note: Number(review.note ?? 0),
-                    commentaire: String(review.commentaire ?? ""),
-                    auteur: String(review.auteur ?? "Anonyme"),
-                    created_at: String(review.created_at ?? "")
-                }));
-            } catch (error) {
-                lastError = error;
-            }
+        const payload = await fetchJson(buildReviewsUrl(id));
+        if (!payload || !payload.success || !Array.isArray(payload.data)) {
+            throw new Error("Invalid reviews payload");
         }
 
-        throw lastError || new Error("Unable to fetch reviews");
+        return payload.data.map((review) => ({
+            id: Number(review.id ?? 0),
+            note: Number(review.note ?? 0),
+            commentaire: String(review.commentaire ?? ""),
+            auteur: String(review.auteur ?? "Anonyme"),
+            created_at: String(review.created_at ?? "")
+        }));
     }
 
     window.CatalogApi = {
