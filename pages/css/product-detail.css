@@ -1,0 +1,140 @@
+.breadcrumb-tactical {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.breadcrumb-tactical a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.breadcrumb-tactical a:hover {
+  text-decoration: underline;
+}
+
+.product-detail-img {
+  background: var(--grey-dark);
+  border: 1px solid var(--grey-mid);
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-category {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.detail-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 2.6rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-main);
+}
+
+.product-rating {
+  color: var(--accent);
+}
+
+.product-rating span {
+  color: var(--text-muted);
+}
+
+.detail-price {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.detail-price-old {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.detail-desc {
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.alert-tactical {
+  background: rgba(143, 181, 74, 0.1);
+  border: 1px solid var(--accent-dim);
+  border-left: 4px solid var(--accent);
+  padding: 0.7rem 0.8rem;
+}
+
+.spec-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--tan-light);
+  margin-bottom: 0.7rem;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.spec-table tr {
+  border-bottom: 1px solid var(--grey-mid);
+}
+
+.spec-table td {
+  padding: 10px 0;
+}
+
+.spec-table td:first-child {
+  color: var(--text-muted);
+  width: 45%;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.spec-table td:last-child {
+  color: var(--tan-light);
+}
+
+.tag-tactical {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  background: var(--grey-mid);
+  color: var(--text-muted);
+  padding: 3px 10px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.tag-tactical.green {
+  background: rgba(143, 181, 74, 0.15);
+  color: var(--accent);
+}
+
+.related-card {
+  background: var(--bg-card);
+  border: 1px solid var(--grey-mid);
+  padding: 0.8rem;
+  height: 100%;
+}
+
+.related-card h3 {
+  font-size: 1rem;
+  font-family: 'Oswald', sans-serif;
+  color: var(--tan-light);
+}
+
+.related-card a {
+  color: var(--accent);
+  text-decoration: none;
+}

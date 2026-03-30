@@ -1,0 +1,283 @@
+:root {
+  --olive: #4a5240;
+  --khaki: #7a7a52;
+  --khaki-light: #9a9a6a;
+  --grey-dark: #2a2d2a;
+  --grey-mid: #3d4038;
+  --grey-light: #5c6058;
+  --accent: #8fb54a;
+  --accent-dim: #6a8a35;
+  --tan: #b5a882;
+  --tan-light: #d4c9a8;
+  --bg-dark: #1a1d18;
+  --bg-card: #252822;
+  --text-main: #d0cebf;
+  --text-muted: #8a8a7a;
+  --danger-red: #c04a3a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cellipse cx='30' cy='40' rx='28' ry='14' fill='%232d3028' opacity='.4'/%3E%3Cellipse cx='120' cy='20' rx='35' ry='12' fill='%233a3d30' opacity='.3'/%3E%3Cellipse cx='170' cy='80' rx='22' ry='18' fill='%23252822' opacity='.5'/%3E%3Cellipse cx='60' cy='110' rx='30' ry='16' fill='%233d4038' opacity='.35'/%3E%3Cellipse cx='150' cy='150' rx='40' ry='15' fill='%232a2d25' opacity='.4'/%3E%3Cellipse cx='20' cy='170' rx='18' ry='22' fill='%23353830' opacity='.3'/%3E%3Cellipse cx='100' cy='190' rx='45' ry='13' fill='%233a3d32' opacity='.35'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+main,
+.site-footer,
+.navbar-ghost {
+  position: relative;
+  z-index: 1;
+}
+
+.navbar-ghost {
+  background: rgba(26, 29, 24, 0.97);
+  border-bottom: 2px solid var(--accent);
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(8px);
+}
+
+.navbar-ghost .navbar-brand {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--accent) !important;
+  text-transform: uppercase;
+}
+
+.navbar-ghost .navbar-brand span {
+  color: var(--tan-light);
+}
+
+.nav-link-ghost {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted) !important;
+  padding: 0.5rem 1rem !important;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.nav-link-ghost:hover,
+.nav-link-ghost.active {
+  color: var(--accent) !important;
+  border-bottom-color: var(--accent);
+}
+
+.navbar-toggler {
+  border-color: var(--accent);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%238fb54a' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.section-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-label::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: var(--text-main);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.text-tan {
+  color: var(--tan-light);
+}
+
+.text-muted-ghost {
+  color: var(--text-muted);
+}
+
+.btn-tactical {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 12px 32px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--bg-dark);
+  font-weight: 600;
+  transition: all 0.25s;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.btn-tactical:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+.nav-cart-btn {
+  padding: 8px 22px;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.btn-outline-tactical {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 12px 32px;
+  border: 2px solid var(--grey-light);
+  background: transparent;
+  color: var(--text-main);
+  font-weight: 500;
+  transition: all 0.25s;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.btn-outline-tactical:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.site-footer {
+  background: var(--grey-dark);
+  border-top: 2px solid var(--grey-mid);
+  padding: 3rem 0 1.5rem;
+}
+
+.footer-brand {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+.footer-brand span {
+  color: var(--tan-light);
+}
+
+.footer-note {
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  margin-bottom: 0;
+}
+
+.footer-link {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: block;
+  padding: 4px 0;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--grey-mid);
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-dim), transparent);
+  margin: 0;
+}
+
+.cart-badge {
+  background: var(--accent);
+  color: var(--bg-dark);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 0;
+  font-weight: 700;
+}
+
+.toast-cart {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--accent);
+  color: var(--bg-dark);
+  padding: 12px 28px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.4s;
+  pointer-events: none;
+}
+
+.form-control-tactical {
+  background: var(--grey-dark);
+  border: 1px solid var(--grey-mid);
+  border-radius: 0;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.form-control-tactical:focus {
+  background: var(--grey-dark);
+  border-color: var(--accent);
+  color: var(--text-main);
+  box-shadow: 0 0 0 2px rgba(143, 181, 74, 0.15);
+  outline: none;
+}
+
+.form-control-tactical::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
