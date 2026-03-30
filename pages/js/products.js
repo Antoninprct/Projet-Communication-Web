@@ -43,7 +43,7 @@ function renderProducts() {
             return `
         <div class="col-md-6 col-lg-4 col-xl-3">
           <article class="product-card" aria-label="Produit ${product.name}">
-            <div class="product-img-wrap">
+            <div class="product-img-wrap" onclick="window.location.href='${basePath}/index.php?page=product&id=${product.id}'">
               <div class="prod-svg-bg">${window.getCatalogSvg(product)}</div>
               <div class="product-img-overlay">VUE RAPIDE</div>
               ${productTag}

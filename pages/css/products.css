@@ -94,6 +94,7 @@
   position: relative;
   height: 200px;
   overflow: hidden;
+  cursor: pointer;
   background: var(--grey-dark);
 }
 
