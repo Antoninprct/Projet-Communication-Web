@@ -3,7 +3,7 @@
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="footer-brand">GHOST<span>OPS</span></div>
-                <p class="mt-3 footer-note">L'equipement des vrais operateurs. Repliques et gear tactique depuis 2012. Base a Lyon, livraison France et Europe.</p>
+                <p class="mt-3 footer-note">L'equipement des vrais operateurs. Repliques et gear tactique depuis 2012. Base a Nantes, livraison France et Europe.</p>
                 <div class="mt-3 d-flex gap-3">
                     <a href="#" class="text-accent fs-5"><i class="bi bi-instagram"></i></a>
                     <a href="#" class="text-accent fs-5"><i class="bi bi-facebook"></i></a>
