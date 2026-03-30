@@ -2,15 +2,66 @@
 
 declare(strict_types=1);
 
+
+
+function dbRequestProducts(PDO $db): array
+{
+    $query = $db->query('
+        SELECT
+            p.*,
+            ROUND(AVG(r.note), 2) AS avg_rating
+        FROM products p
+        LEFT JOIN reviews r ON r.product_id = p.id
+        GROUP BY p.id
+        ORDER BY p.id ASC
+    ');
+
+    $products = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    return array_map('formatProduct', $products);
+}
+
+
+
+
+
 function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
 {
     switch ($method) {
         case 'GET':
             if ($idSegment === null) {
-                getAllProducts($pdo);
+                // GET /api/products
+                $products = dbRequestProducts($pdo);
+                sendJsonResponse(200, [
+                    'success' => true,
+                    'data'    => $products,
+                ]);
             }
 
-            getProductById($pdo, $idSegment);
+            // GET /api/products/{id}
+            if (!preg_match('/^\d+$/', $idSegment)) {
+                sendJsonResponse(400, [
+                    'success' => false,
+                    'message' => 'Invalid product id',
+                ]);
+            }
+
+            $id      = (int) $idSegment;
+            $product = dbRequestProduct($pdo, $id);
+
+            if ($product === null) {
+                sendJsonResponse(404, [
+                    'success' => false,
+                    'message' => 'Product not found',
+                ]);
+            }
+
+            $reviews = dbRequestReviews($pdo, $id);
+
+            sendJsonResponse(200, [
+                'success' => true,
+                'data'    => array_merge($product, ['reviews' => $reviews]),
+            ]);
 
         case 'POST':
         case 'PUT':
@@ -27,44 +78,4 @@ function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
                 'message' => 'Method not allowed',
             ]);
     }
-}
-
-function getAllProducts(PDO $pdo): void
-{
-    $query = $pdo->query('SELECT * FROM products ORDER BY id ASC');
-    $products = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    sendJsonResponse(200, [
-        'success' => true,
-        'data' => $products,
-    ]);
-}
-
-function getProductById(PDO $pdo, string $idSegment): void
-{
-    if (!preg_match('/^\d+$/', $idSegment)) {
-        sendJsonResponse(400, [
-            'success' => false,
-            'message' => 'Invalid product id',
-        ]);
-    }
-
-    $productId = (int) $idSegment;
-    $statement = $pdo->prepare('SELECT * FROM products WHERE id = :id');
-    $statement->bindValue(':id', $productId, PDO::PARAM_INT);
-    $statement->execute();
-
-    $product = $statement->fetch(PDO::FETCH_ASSOC);
-
-    if ($product === false) {
-        sendJsonResponse(404, [
-            'success' => false,
-            'message' => 'Product not found',
-        ]);
-    }
-
-    sendJsonResponse(200, [
-        'success' => true,
-        'data' => $product,
-    ]);
 }
