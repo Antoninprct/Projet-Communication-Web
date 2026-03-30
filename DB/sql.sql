@@ -62,32 +62,32 @@ INSERT INTO products (nom, description, prix, stock, category) VALUES
 -- =========================
 -- PRODUITS FRONTEND : AEG
 -- =========================
-INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
+INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
-('M4A1 CARBINE RIS', '', 289, 349, 10, 'AEG', 'aeg', 5, 128, 'TOP VENTE', 1),
-('AK-105 FULL METAL', '', 319, NULL, 8, 'AEG', 'aeg', 4, 41, 'STOCK LIMITE', 0);
+('M4A1 CARBINE RIS', '', 289, 349, 10, 'AEG', 'aeg', 5, 'TOP VENTE', 1),
+('AK-105 FULL METAL', '', 319, NULL, 8, 'AEG', 'aeg', 4, 'STOCK LIMITE', 0);
 
 -- =========================
 -- PISTOLETS 
 -- =========================
-INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
+INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
-('G17 GEN5 GBB', '', 159, 199, 10, 'Pistolet GBB', 'gbb', 4, 87, '-20%', 1);
+('G17 GEN5 GBB', '', 159, 199, 10, 'Pistolet GBB', 'gbb', 4, '-20%', 1);
 
 -- =========================
 -- SNIPERS
 -- =========================
-INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
+INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
-('VSR-10 SNIPER', '', 399, NULL, 5, 'Fusil de precision', 'sniper', 5, 53, 'NOUVEAU', 0);
+('VSR-10 SNIPER', '', 399, NULL, 5, 'Fusil de precision', 'sniper', 5, 'NOUVEAU', 0);
 
 -- =========================
 -- EQUIPEMENTS
 -- =========================
-INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, reviews_count, tag, promo)
+INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
-('CASQUE FAST CAMO', '', 89, NULL, 20, 'Equipement', 'gear', 4, 214, NULL, 0),
-('GILET PLATE CARRIER', '', 129, 159, 15, 'Equipement', 'gear', 4, 178, 'PROMO', 1);
+('CASQUE FAST CAMO', '', 89, NULL, 20, 'Equipement', 'gear', 4, NULL, 0),
+('GILET PLATE CARRIER', '', 129, 159, 15, 'Equipement', 'gear', 4, 'PROMO', 1);
 
 -- =========================
 -- TABLE REVIEWS

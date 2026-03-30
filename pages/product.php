@@ -48,6 +48,10 @@ require __DIR__ . '/partials/url.php';
                     <h2 class="spec-title">Specifications</h2>
                     <table class="spec-table" id="detail-specs"></table>
                 </div>
+                <div class="mt-4">
+                    <h2 class="spec-title">Avis clients</h2>
+                    <div id="detail-reviews" class="reviews-list"></div>
+                </div>
             </div>
         </div>
 

@@ -1,11 +1,12 @@
-const products = window.CATALOG_PRODUCTS || [];
+let products = [];
 
 let currentFilter = "all";
 let currentSearch = "";
 
 function formatPrice(product) {
-    const oldPriceHtml = product.oldPrice ? `<span class="product-price-old">${product.oldPrice}EUR</span>` : "";
-    return `<span class="product-price">${product.price}EUR</span>${oldPriceHtml}`;
+    const currentPrice = Number(product.price || 0).toFixed(2);
+    const oldPriceHtml = product.oldPrice ? `<span class="product-price-old">${Number(product.oldPrice).toFixed(2)} EUR</span>` : "";
+    return `<span class="product-price">${currentPrice} EUR</span>${oldPriceHtml}`;
 }
 
 function getFilteredProducts() {
@@ -21,6 +22,10 @@ function getFilteredProducts() {
 
 function renderProducts() {
     const grid = document.getElementById("products-grid");
+    if (!grid) {
+        return;
+    }
+
     const filteredProducts = getFilteredProducts();
     const basePath = window.APP_BASE_PATH && window.APP_BASE_PATH !== "/" ? window.APP_BASE_PATH : "";
 
@@ -46,7 +51,7 @@ function renderProducts() {
             <div class="product-body">
               <div class="product-category">${product.category}</div>
               <h2 class="product-name">${product.name}</h2>
-              <div class="product-rating">${"★".repeat(product.rating)}${"☆".repeat(5 - product.rating)} <span>(${product.reviews} avis)</span></div>
+                            <div class="product-rating">${"★".repeat(product.rating)}${"☆".repeat(5 - product.rating)} <span>(${product.reviews} avis)</span></div>
               <div>${formatPrice(product)}</div>
             </div>
             <div class="product-footer">
@@ -81,6 +86,10 @@ function bindEvents() {
     const filterButtons = document.querySelectorAll(".filter-btn");
     const grid = document.getElementById("products-grid");
 
+    if (!searchInput || !grid || filterButtons.length === 0) {
+        return;
+    }
+
     searchInput.addEventListener("input", (event) => {
         currentSearch = event.target.value;
         renderProducts();
@@ -108,7 +117,24 @@ function bindEvents() {
     });
 }
 
+async function loadProducts() {
+    const grid = document.getElementById("products-grid");
+    if (!grid) {
+        return;
+    }
+
+    grid.innerHTML = '<div class="col-12"><div class="empty-state">// CHARGEMENT DES PRODUITS... //</div></div>';
+
+    try {
+        products = await window.CatalogApi.fetchProducts();
+        renderProducts();
+    } catch (error) {
+        grid.innerHTML = '<div class="col-12"><div class="empty-state">// API INDISPONIBLE //</div></div>';
+        console.error("Failed to load products:", error);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     bindEvents();
-    renderProducts();
+    loadProducts();
 });

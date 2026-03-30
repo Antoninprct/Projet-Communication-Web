@@ -10,7 +10,18 @@ function dbRequestProducts(PDO $db): array
     // Requête SQL : récupère tous les produits + moyenne des notes
     $query = $db->query('
         SELECT
-            p.*,
+            p.id,
+            p.nom,
+            p.description,
+            p.prix,
+            p.old_price,
+            p.stock,
+            p.category,
+            p.type,
+            p.rating,
+            COUNT(r.id) AS reviews_count,
+            p.tag,
+            p.promo,
             ROUND(AVG(r.note), 2) AS avg_rating
         FROM products p
         LEFT JOIN reviews r ON r.product_id = p.id
@@ -33,7 +44,18 @@ function dbRequestProduct(PDO $db, int $id): ?array
     // Prépare la requête
     $stmt = $db->prepare('
         SELECT
-            p.*,
+            p.id,
+            p.nom,
+            p.description,
+            p.prix,
+            p.old_price,
+            p.stock,
+            p.category,
+            p.type,
+            p.rating,
+            COUNT(r.id) AS reviews_count,
+            p.tag,
+            p.promo,
             ROUND(AVG(r.note), 2) AS avg_rating
         FROM products p
         LEFT JOIN reviews r ON r.product_id = p.id
@@ -56,33 +78,6 @@ function dbRequestProduct(PDO $db, int $id): ?array
     // Formate le produit
     return formatProduct($product);
 }
-
-// Récupérer les avis d’un produit
-
-function dbRequestReviews(PDO $db, int $productId): array
-{
-    // Requête avec jointure utilisateur
-    $stmt = $db->prepare('
-        SELECT
-            r.id,
-            r.note,
-            r.commentaire,
-            r.created_at,
-            u.nom AS auteur
-        FROM reviews r
-        INNER JOIN user u ON u.id = r.user_id
-        WHERE r.product_id = :product_id
-        ORDER BY r.created_at DESC
-    ');
-
-    // Remplace :product_id
-    $stmt->bindValue(':product_id', $productId, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Retourne tous les avis
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
 
 // Formater un produit
 
@@ -110,16 +105,6 @@ function formatProduct(array $product): array
     ];
 }
 
-
-// Envoyer une réponse JSON
-
-function sendJsonResponse(int $statusCode, array $data): void
-{
-    http_response_code($statusCode);
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit;
-}
 
 // Gérer les routes API /products
 
@@ -162,13 +147,10 @@ function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
                 break;
             }
 
-            // Récupère les avis
-            $reviews = dbRequestReviews($pdo, $id);
-
             // Réponse finale
             sendJsonResponse(200, [
                 'success' => true,
-                'data'    => array_merge($product, ['reviews' => $reviews]),
+                'data'    => $product,
             ]);
             break;
 

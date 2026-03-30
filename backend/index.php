@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 header('Content-Type: application/json; charset=utf-8');
 
 function sendJsonResponse(int $statusCode, array $payload): void
@@ -19,6 +23,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
 
 require __DIR__ . '/database.php';
 require __DIR__ . '/api/products.php';
+require __DIR__ . '/api/reviews.php';
 
 // Routes
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
@@ -29,6 +34,13 @@ if ($scriptBasePath !== '' && $scriptBasePath !== '/' && str_starts_with($reques
 }
 
 $requestPath = '/' . ltrim($requestPath, '/');
+
+// Autorise /backend/index.php/api/products
+if (str_starts_with($requestPath, '/index.php')) {
+    $requestPath = substr($requestPath, strlen('/index.php')) ?: '/';
+    $requestPath = '/' . ltrim($requestPath, '/');
+}
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Route produits
@@ -39,6 +51,11 @@ if (preg_match('#^/api/products/?$#', $requestPath)) {
 // Route produit spécifique
 if (preg_match('#^/api/products/([^/]+)/?$#', $requestPath, $matches)) {
     handleProductsRoute($pdo, $method, $matches[1]);
+}
+
+// Route avis via /api/reviews/?id=N ou /reviews/?id=N
+if (preg_match('#^(api/)?reviews/?$#', ltrim($requestPath, '/'))) {
+    handleReviewsRoute($pdo, $method);
 }
 
 sendJsonResponse(404, [
