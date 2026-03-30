@@ -34,6 +34,6 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom text-center">© 2024 GHOST OPS TACTICAL - TOUS DROITS RESERVES - VENTE RESERVEE AUX +18 ANS</div>
+        <div class="footer-bottom text-center">© 2026 GHOST OPS TACTICAL - TOUS DROITS RESERVES - VENTE RESERVEE AUX +18 ANS</div>
     </div>
 </footer>
