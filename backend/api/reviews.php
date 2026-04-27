@@ -85,12 +85,45 @@ function handleReviewsRoute(PDO $pdo, string $method): void
             break;
 
         case 'POST':
+            $input = json_decode(file_get_contents('php://input'), true);
+            if (!is_array($input) || empty($input['product_id']) || !isset($input['note'])) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Données invalides']);
+            }
+            // Temporaire client_id=1 si pas géré
+            $input['user_id'] = $input['user_id'] ?? 1;
+            
+            $id = dbAddReview($pdo, $input);
+            sendJsonResponse(201, ['success' => true, 'data' => ['id' => $id]]);
+            break;
+
         case 'PUT':
+            $idParam = $_GET['id'] ?? null;
+            if ($idParam === null || !preg_match('/^\d+$/', (string) $idParam)) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Missing or invalid review id']);
+            }
+            $input = json_decode(file_get_contents('php://input'), true);
+            if (!is_array($input) || !isset($input['note'])) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Données invalides']);
+            }
+            $success = dbModifyReview($pdo, (int)$idParam, $input);
+            if ($success) {
+                sendJsonResponse(200, ['success' => true, 'message' => 'Avis mis à jour']);
+            } else {
+                sendJsonResponse(404, ['success' => false, 'message' => 'Avis non trouvé']);
+            }
+            break;
+
         case 'DELETE':
-            sendJsonResponse(503, [
-                'success' => false,
-                'message' => 'Route désactivée (admin uniquement)',
-            ]);
+            $idParam = $_GET['id'] ?? null;
+            if ($idParam === null || !preg_match('/^\d+$/', (string) $idParam)) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Missing or invalid review id']);
+            }
+            $success = dbDeleteReview($pdo, (int)$idParam);
+            if ($success) {
+                sendJsonResponse(200, ['success' => true, 'message' => 'Avis supprimé']);
+            } else {
+                sendJsonResponse(404, ['success' => false, 'message' => 'Avis non trouvé']);
+            }
             break;
 
         default:

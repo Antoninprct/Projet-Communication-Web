@@ -30,6 +30,10 @@ require __DIR__ . '/partials/url.php';
         </section>
 
         <section class="container py-4">
+            <div id="admin-actions" class="mb-4">
+                <button class="btn-tactical mb-3" data-bs-toggle="modal" data-bs-target="#addProductModal"><i class="bi bi-plus-circle me-2"></i>Ajouter un produit (Admin)</button>
+            </div>
+
             <div class="filter-bar">
                 <span class="filter-label">FILTRER :</span>
                 <button class="filter-btn active" data-filter="all" type="button">TOUT</button>
@@ -51,6 +55,55 @@ require __DIR__ . '/partials/url.php';
 
     <div id="toast-cart" class="toast-cart">
         <i class="bi bi-check2-circle me-2"></i>AJOUTE AU PANIER
+    </div>
+
+    <!-- Admin Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: var(--bg-card); border: 1px solid var(--accent); color: var(--text-main);">
+                <div class="modal-header" style="border-bottom: 1px solid var(--grey-light);">
+                    <h5 class="modal-title" id="addProductModalLabel">Ajouter un produit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="mb-3">
+                            <label for="p-nom" class="form-label">Nom *</label>
+                            <input type="text" class="form-control" id="p-nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="p-desc" class="form-label">Description</label>
+                            <textarea class="form-control" id="p-desc"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="p-prix" class="form-label">Prix *</label>
+                                <input type="number" step="0.01" class="form-control" id="p-prix" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="p-old-price" class="form-label">Ancien prix</label>
+                                <input type="number" step="0.01" class="form-control" id="p-old-price">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="p-image" class="form-label">URL de l'image</label>
+                            <input type="text" class="form-control" id="p-image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="p-cat" class="form-label">Catégorie</label>
+                            <select class="form-select" id="p-cat">
+                                <option value="AEG">AEG</option>
+                                <option value="Pistolet GBB">Pistolet GBB</option>
+                                <option value="Fusil de precision">Sniper</option>
+                                <option value="Equipement">Equipement</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-tactical w-100">Créer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <?php require __DIR__ . '/partials/support-chat.php'; ?>

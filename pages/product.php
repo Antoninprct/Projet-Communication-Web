@@ -44,6 +44,13 @@ require __DIR__ . '/partials/url.php';
                     <button class="btn-tactical" type="button" id="detail-add-cart"><i class="bi bi-bag-plus me-2"></i>Ajouter au panier</button>
                     <a class="btn-outline-tactical" href="<?= app_url('index.php?page=products') ?>">Retour catalogue</a>
                 </div>
+
+                <!-- Admin Actions -->
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-3 flex-wrap" style="border-top:1px solid #444; padding-top:15px;" id="admin-actions-container">
+                    <button class="btn btn-warning rounded-0 fw-bold px-4 py-2" style="font-family:'Oswald', sans-serif;" id="btn-edit-product" data-bs-toggle="modal" data-bs-target="#editProductModal"><i class="bi bi-pencil-square me-2"></i>Modifier</button>
+                    <button class="btn btn-danger rounded-0 fw-bold px-4 py-2" style="font-family:'Oswald', sans-serif;" id="btn-delete-product"><i class="bi bi-trash me-2"></i>Supprimer</button>
+                </div>
+
                 <div class="mt-4">
                     <h2 class="spec-title">Specifications</h2>
                     <table class="spec-table" id="detail-specs"></table>
@@ -62,6 +69,77 @@ require __DIR__ . '/partials/url.php';
     </main>
 
     <?php require __DIR__ . '/partials/footer.php'; ?>
+
+    <!-- Admin Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: var(--bg-card); border: 1px solid var(--accent); color: var(--text-main);">
+                <div class="modal-header" style="border-bottom: 1px solid var(--grey-light);">
+                    <h5 class="modal-title" id="editProductModalLabel">Modifier le produit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm">
+                        <div class="mb-3">
+                            <label for="ep-nom" class="form-label">Nom *</label>
+                            <input type="text" class="form-control" id="ep-nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ep-desc" class="form-label">Description</label>
+                            <textarea class="form-control" id="ep-desc"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="ep-prix" class="form-label">Prix *</label>
+                                <input type="number" step="0.01" class="form-control" id="ep-prix" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="ep-old-price" class="form-label">Ancien prix</label>
+                                <input type="number" step="1" class="form-control" id="ep-old-price">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ep-image" class="form-label">URL de l'image</label>
+                            <input type="text" class="form-control" id="ep-image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ep-cat" class="form-label">Catégorie</label>
+                            <select class="form-select" id="ep-cat">
+                                <option value="Fusil d'assaut">Fusil d'assaut</option>
+                                <option value="AEG">AEG</option>
+                                <option value="Pistolet GBB">Pistolet GBB</option>
+                                <option value="Fusil de precision">Sniper</option>
+                                <option value="Equipement">Equipement</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-tactical w-100">Mettre à jour</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Delete Confirmation Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: var(--bg-card); border: 1px solid var(--danger-red); color: var(--text-main);">
+                <div class="modal-header" style="border-bottom: 1px solid var(--grey-light);">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmer la suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">Cette action est irreversible. Voulez-vous vraiment supprimer ce produit ?</p>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid var(--grey-light);">
+                    <button type="button" class="btn btn-outline-light rounded-0" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger rounded-0" id="confirm-delete-product">
+                        <i class="bi bi-trash me-2"></i>Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="toast-cart" class="toast-cart"><i class="bi bi-check2-circle me-2"></i>AJOUTE AU PANIER</div>
     <?php require __DIR__ . '/partials/support-chat.php'; ?>

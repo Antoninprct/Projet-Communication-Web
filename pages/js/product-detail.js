@@ -14,6 +14,24 @@ function showToast(message, iconClass) {
     }, 2200);
 }
 
+function getApiBaseUrl() {
+    const basePath = window.APP_BASE_PATH && window.APP_BASE_PATH !== "/" ? window.APP_BASE_PATH : "";
+    return `${basePath}/backend/index.php/api`;
+}
+
+async function extractApiErrorMessage(response) {
+    try {
+        const payload = await response.json();
+        if (payload && typeof payload.message === "string" && payload.message.trim() !== "") {
+            return payload.message;
+        }
+    } catch (error) {
+        // Ignore JSON parse errors and fallback to generic text.
+    }
+
+    return `Erreur API (${response.status})`;
+}
+
 function getProductIdFromRoute() {
     const pathParts = window.location.pathname.split("/").filter(Boolean);
     const lastPart = pathParts[pathParts.length - 1] || "";
@@ -135,6 +153,8 @@ async function renderProductDetail() {
     document.getElementById("detail-tags").innerHTML = `${product.tag ? `<span class="tag-tactical green">${product.tag}</span>` : ""}<span class="tag-tactical">${product.stock > 0 ? "EN STOCK" : "RUPTURE"}</span>`;
     document.getElementById("detail-specs").innerHTML = product.specs.map((line) => `<tr><td>${line[0]}</td><td>${line[1]}</td></tr>`).join("");
 
+    window.CURRENT_PRODUCT = product;
+
     renderReviews(product);
     renderRelated(product);
 }
@@ -146,6 +166,124 @@ document.addEventListener("DOMContentLoaded", () => {
     if (addButton) {
         addButton.addEventListener("click", () => {
             showToast("AJOUTE AU PANIER", "bi bi-check2-circle");
+        });
+    }
+
+    const btnDelete = document.getElementById("btn-delete-product");
+    const confirmDeleteModalEl = document.getElementById("confirmDeleteModal");
+    const confirmDeleteBtn = document.getElementById("confirm-delete-product");
+    if (btnDelete) {
+        btnDelete.addEventListener("click", () => {
+            if (!confirmDeleteModalEl) {
+                showToast("MODALE DE CONFIRMATION INDISPONIBLE", "bi bi-exclamation-triangle");
+                return;
+            }
+
+            const deleteModal = bootstrap.Modal.getOrCreateInstance(confirmDeleteModalEl);
+            deleteModal.show();
+        });
+    }
+
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener("click", async () => {
+            const id = getProductIdFromRoute();
+            const originalText = confirmDeleteBtn.innerHTML;
+            confirmDeleteBtn.disabled = true;
+            confirmDeleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Suppression...';
+
+            try {
+                const res = await fetch(`${getApiBaseUrl()}/products/${id}`, { method: "DELETE" });
+                if (res.ok) {
+                    if (confirmDeleteModalEl) {
+                        const deleteModal = bootstrap.Modal.getOrCreateInstance(confirmDeleteModalEl);
+                        deleteModal.hide();
+                    }
+                    showToast("PRODUIT SUPPRIME", "bi bi-check2-circle");
+                    setTimeout(() => {
+                        window.location.href = `${window.APP_BASE_PATH}/index.php?page=products`;
+                    }, 700);
+                } else {
+                    const message = await extractApiErrorMessage(res);
+                    showToast(message.toUpperCase(), "bi bi-x-circle");
+                }
+            } catch (error) {
+                showToast("ERREUR RESEAU", "bi bi-x-circle");
+            } finally {
+                confirmDeleteBtn.disabled = false;
+                confirmDeleteBtn.innerHTML = originalText;
+            }
+        });
+    }
+
+    const btnEdit = document.getElementById("btn-edit-product");
+    if (btnEdit) {
+        btnEdit.addEventListener("click", () => {
+            const p = window.CURRENT_PRODUCT;
+            if (!p) return;
+
+            document.getElementById("ep-nom").value = p.name || "";
+            document.getElementById("ep-desc").value = p.desc || "";
+            document.getElementById("ep-prix").value = p.price || 0;
+            document.getElementById("ep-old-price").value = p.oldPrice || "";
+            document.getElementById("ep-image").value = p.imageUrl || "";
+
+            const catSelect = document.getElementById("ep-cat");
+            if (catSelect) {
+                const opts = Array.from(catSelect.options);
+                const hasMatch = opts.some(opt => opt.value === p.category);
+                if (hasMatch) catSelect.value = p.category;
+            }
+        });
+    }
+
+    const formEdit = document.getElementById("editProductForm");
+    if (formEdit) {
+        formEdit.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const p = window.CURRENT_PRODUCT;
+            if (!p) return;
+
+            const newNom = document.getElementById("ep-nom").value;
+            const newDesc = document.getElementById("ep-desc").value;
+            const newPrix = parseFloat(document.getElementById("ep-prix").value);
+            const newOldPrice = document.getElementById("ep-old-price").value ? parseFloat(document.getElementById("ep-old-price").value) : null;
+            const newImg = document.getElementById("ep-image").value;
+            const newCat = document.getElementById("ep-cat").value;
+
+            const payload = {
+                nom: newNom,
+                description: newDesc,
+                prix: newPrix,
+                image_url: newImg,
+                old_price: newOldPrice,
+                category: newCat
+            };
+
+            const id = p.id;
+            try {
+                const res = await fetch(`${getApiBaseUrl()}/products/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    const editModalEl = document.getElementById("editProductModal");
+                    if (editModalEl) {
+                        const editModal = bootstrap.Modal.getOrCreateInstance(editModalEl);
+                        editModal.hide();
+                    }
+
+                    showToast("PRODUIT MODIFIE", "bi bi-check2-circle");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 700);
+                } else {
+                    const message = await extractApiErrorMessage(res);
+                    showToast(message.toUpperCase(), "bi bi-x-circle");
+                }
+            } catch (error) {
+                showToast("ERREUR RESEAU", "bi bi-x-circle");
+            }
         });
     }
 });

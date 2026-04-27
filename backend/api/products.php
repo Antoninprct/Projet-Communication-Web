@@ -22,6 +22,7 @@ function dbRequestProducts(PDO $db): array
             COUNT(r.id) AS reviews_count,
             p.tag,
             p.promo,
+            p.image_url,
             ROUND(AVG(r.note), 2) AS avg_rating
         FROM products p
         LEFT JOIN reviews r ON r.product_id = p.id
@@ -56,6 +57,7 @@ function dbRequestProduct(PDO $db, int $id): ?array
             COUNT(r.id) AS reviews_count,
             p.tag,
             p.promo,
+            p.image_url,
             ROUND(AVG(r.note), 2) AS avg_rating
         FROM products p
         LEFT JOIN reviews r ON r.product_id = p.id
@@ -102,6 +104,7 @@ function formatProduct(array $product): array
         'reviews_count' => (int)   ($product['reviews_count'] ?? 0),
         'tag'           => $product['tag']   ?? null,
         'promo'         => (bool)  ($product['promo'] ?? false),
+        'image_url'     => $product['image_url'] ?? null,
     ];
 }
 
@@ -110,7 +113,7 @@ function formatProduct(array $product): array
 
 function dbAddProduct(PDO $db, array $productData): int
 {
-    $stmt = $db->prepare('INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt = $db->prepare('INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 
     $stmt->execute([
         $productData['nom'],
@@ -122,7 +125,8 @@ function dbAddProduct(PDO $db, array $productData): int
         $productData['type'] ?? null,
         $productData['rating'] ?? 0,
         $productData['tag'] ?? null,
-        $productData['promo'] ?? 0
+        $productData['promo'] ?? 0,
+        $productData['image_url'] ?? null
     ]);
 
     return (int) $db->lastInsertId();
@@ -132,7 +136,7 @@ function dbAddProduct(PDO $db, array $productData): int
 
 function dbModifyProduct(PDO $db, int $id, array $productData): bool
 {
-    $stmt = $db->prepare('UPDATE products SET nom = ?, description = ?, prix = ?, old_price = ?, stock = ?, category = ?, type = ?, rating = ?, tag = ?, promo = ? WHERE id = ?');
+    $stmt = $db->prepare('UPDATE products SET nom = ?, description = ?, prix = ?, old_price = ?, stock = ?, category = ?, type = ?, rating = ?, tag = ?, promo = ?, image_url = ? WHERE id = ?');
 
     return $stmt->execute([
         $productData['nom'],
@@ -145,6 +149,7 @@ function dbModifyProduct(PDO $db, int $id, array $productData): bool
         $productData['rating'] ?? 0,
         $productData['tag'] ?? null,
         $productData['promo'] ?? 0,
+        $productData['image_url'] ?? null,
         $id
     ]);
 }
@@ -208,13 +213,40 @@ function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
             break;
 
         case 'POST':
+            $input = json_decode(file_get_contents('php://input'), true);
+            if (!is_array($input) || empty($input['nom']) || !isset($input['prix'])) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Données invalides']);
+            }
+            $id = dbAddProduct($pdo, $input);
+            sendJsonResponse(201, ['success' => true, 'data' => ['id' => $id]]);
+            break;
+
         case 'PUT':
+            if ($idSegment === null || !preg_match('/^\d+$/', $idSegment)) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Invalid product id']);
+            }
+            $input = json_decode(file_get_contents('php://input'), true);
+            if (!is_array($input) || empty($input['nom']) || !isset($input['prix'])) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Données invalides']);
+            }
+            $success = dbModifyProduct($pdo, (int)$idSegment, $input);
+            if ($success) {
+                sendJsonResponse(200, ['success' => true, 'message' => 'Produit mis à jour']);
+            } else {
+                sendJsonResponse(404, ['success' => false, 'message' => 'Produit non trouvé']);
+            }
+            break;
+
         case 'DELETE':
-            // Routes désactivées
-            sendJsonResponse(503, [
-                'success' => false,
-                'message' => 'Route désactivée (admin uniquement)',
-            ]);
+            if ($idSegment === null || !preg_match('/^\d+$/', $idSegment)) {
+                sendJsonResponse(400, ['success' => false, 'message' => 'Invalid product id']);
+            }
+            $success = dbDeleteProduct($pdo, (int)$idSegment);
+            if ($success) {
+                sendJsonResponse(200, ['success' => true, 'message' => 'Produit supprimé']);
+            } else {
+                sendJsonResponse(404, ['success' => false, 'message' => 'Produit non trouvé']);
+            }
             break;
 
         default:

@@ -3,6 +3,11 @@ let products = [];
 let currentFilter = "all";
 let currentSearch = "";
 
+function getApiBaseUrl() {
+    const basePath = window.APP_BASE_PATH && window.APP_BASE_PATH !== "/" ? window.APP_BASE_PATH : "";
+    return `${basePath}/backend/index.php/api`;
+}
+
 function formatPrice(product) {
     const currentPrice = Number(product.price || 0).toFixed(2);
     const oldPriceHtml = product.oldPrice ? `<span class="product-price-old">${Number(product.oldPrice).toFixed(2)} EUR</span>` : "";
@@ -137,4 +142,48 @@ async function loadProducts() {
 document.addEventListener("DOMContentLoaded", () => {
     bindEvents();
     loadProducts();
+
+    // ADMIN: Ajouter un produit
+    const addProductForm = document.getElementById("addProductForm");
+    if (addProductForm) {
+        addProductForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nom = document.getElementById('p-nom').value;
+            const desc = document.getElementById('p-desc').value;
+            const prix = parseFloat(document.getElementById('p-prix').value);
+            const oldPrice = document.getElementById('p-old-price').value ? parseFloat(document.getElementById('p-old-price').value) : null;
+            const imageUrl = document.getElementById('p-image').value;
+            const cat = document.getElementById('p-cat').value;
+
+            const payload = {
+                nom: nom,
+                description: desc,
+                prix: prix,
+                old_price: oldPrice,
+                image_url: imageUrl,
+                category: cat
+            };
+
+            try {
+                const response = await fetch(`${getApiBaseUrl()}/products/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showToast("PRODUIT AJOUTE !", "bi bi-check2-circle");
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+                    modal.hide();
+                    addProductForm.reset();
+                    loadProducts();
+                } else {
+                    showToast("ERREUR AJOUT (Admin requis ?)", "bi bi-x-circle");
+                }
+            } catch (e) {
+                console.error(e);
+                showToast("ERREUR RESEAU", "bi bi-x-circle");
+            }
+        });
+    }
 });

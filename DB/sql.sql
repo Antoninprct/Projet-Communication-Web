@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS products (
     rating INTEGER DEFAULT 0,
     reviews_count INTEGER DEFAULT 0,
     tag TEXT,
-    promo INTEGER DEFAULT 0
+    promo INTEGER DEFAULT 0,
+    image_url TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_products_nom ON products(nom);

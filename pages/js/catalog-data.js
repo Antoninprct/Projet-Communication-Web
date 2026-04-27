@@ -1,6 +1,9 @@
 (function () {
 
     function getSvgForProduct(product) {
+        if (product.imageUrl) {
+            return `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><image href="${product.imageUrl}" x="0" y="0" width="200" height="120" preserveAspectRatio="xMidYMid slice" /></svg>`;
+        }
         const svgs = [
             '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="50" width="140" height="18" rx="2" fill="#4a5240"/><rect x="140" y="45" width="35" height="28" rx="2" fill="#3a3d30"/><rect x="10" y="52" width="20" height="14" rx="1" fill="#3d4038"/><rect x="60" y="42" width="80" height="10" rx="1" fill="#5c6058"/><rect x="75" y="68" width="30" height="20" rx="2" fill="#2a2d25"/><circle cx="90" cy="78" r="4" fill="#1a1d18"/></svg>',
             '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="52" width="100" height="16" rx="2" fill="#4a5240"/><rect x="125" y="48" width="30" height="24" rx="2" fill="#3a3d30"/><rect x="30" y="54" width="15" height="12" rx="1" fill="#3d4038"/><rect x="65" y="44" width="55" height="9" rx="1" fill="#5c6058"/><rect x="72" y="68" width="22" height="18" rx="2" fill="#2a2d25"/></svg>',
@@ -49,6 +52,7 @@
             oldPrice,
             rating,
             avgRating,
+            imageUrl: raw.image_url ? String(raw.image_url) : null,
             reviews: reviewsCount,
             reviewsList: Array.isArray(raw.reviews)
                 ? raw.reviews.map((review) => ({
