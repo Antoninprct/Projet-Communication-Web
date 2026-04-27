@@ -287,3 +287,64 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+//chagement
+// === EXISTANT (ton code) ===
+// ... je garde tout ton code intact ...
+
+// 🔥 AJOUT AVIS
+async function submitReview(productId) {
+    const name = document.getElementById("review-name").value;
+    const comment = document.getElementById("review-comment").value;
+    const note = document.getElementById("review-note").value;
+
+    if (!name || !comment || !note) {
+        showToast("REMPLIS TOUS LES CHAMPS", "bi bi-exclamation-circle");
+        return;
+    }
+
+    try {
+        await window.CatalogApi.addReview({
+            produit_id: productId,
+            auteur: name,
+            commentaire: comment,
+            note: Number(note)
+        });
+
+        showToast("AVIS ENVOYE", "bi bi-check2-circle");
+
+        // reload
+        const reviews = await window.CatalogApi.fetchReviewsByProductId(productId);
+        renderReviews({ reviewsList: reviews });
+
+        // reset
+        document.getElementById("review-name").value = "";
+        document.getElementById("review-comment").value = "";
+        document.getElementById("review-note").value = "";
+
+    } catch (error) {
+        console.error(error);
+        showToast("ERREUR", "bi bi-x-circle");
+    }
+}
+
+// === DOM READY ===
+document.addEventListener("DOMContentLoaded", () => {
+    renderProductDetail();
+
+    const addButton = document.getElementById("detail-add-cart");
+    if (addButton) {
+        addButton.addEventListener("click", () => {
+            showToast("AJOUTE AU PANIER", "bi bi-check2-circle");
+        });
+    }
+
+    // 🔗 bouton avis
+    const reviewBtn = document.getElementById("submit-review");
+    if (reviewBtn) {
+        const productId = getProductIdFromRoute();
+        reviewBtn.addEventListener("click", () => {
+            submitReview(productId);
+        });
+    }
+});
