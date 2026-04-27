@@ -57,6 +57,31 @@ require __DIR__ . '/partials/url.php';
                 </div>
                 <div class="mt-4">
                     <h2 class="spec-title">Avis clients</h2>
+                    <form id="review-form" class="review-form">
+                        <input type="hidden" id="review-id" value="">
+                        <div class="review-form-grid">
+                            <div class="review-field">
+                                <label>Note *</label>
+                                <input type="hidden" id="review-note" value="">
+                                <div class="rating-stars" role="radiogroup" aria-label="Note">
+                                    <button type="button" class="rating-star-button" data-rating="1" aria-pressed="false" aria-label="1 etoile">★</button>
+                                    <button type="button" class="rating-star-button" data-rating="2" aria-pressed="false" aria-label="2 etoiles">★</button>
+                                    <button type="button" class="rating-star-button" data-rating="3" aria-pressed="false" aria-label="3 etoiles">★</button>
+                                    <button type="button" class="rating-star-button" data-rating="4" aria-pressed="false" aria-label="4 etoiles">★</button>
+                                    <button type="button" class="rating-star-button" data-rating="5" aria-pressed="false" aria-label="5 etoiles">★</button>
+                                </div>
+                            </div>
+                            <div class="review-field">
+                                <label for="review-comment">Commentaire *</label>
+                                <textarea id="review-comment" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="review-form-actions">
+                            <button class="btn-tactical" type="submit" id="review-submit">Envoyer l'avis</button>
+                            <button class="btn-outline-tactical" type="button" id="review-cancel" hidden>Annuler</button>
+                            <span class="review-hint">Les avis sont publics. Modifiables apres publication.</span>
+                        </div>
+                    </form>
                     <div id="detail-reviews" class="reviews-list"></div>
                 </div>
             </div>
@@ -134,6 +159,27 @@ require __DIR__ . '/partials/url.php';
                 <div class="modal-footer" style="border-top: 1px solid var(--grey-light);">
                     <button type="button" class="btn btn-outline-light rounded-0" data-bs-dismiss="modal">Annuler</button>
                     <button type="button" class="btn btn-danger rounded-0" id="confirm-delete-product">
+                        <i class="bi bi-trash me-2"></i>Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Delete Confirmation Modal -->
+    <div class="modal fade" id="confirmDeleteReviewModal" tabindex="-1" aria-labelledby="confirmDeleteReviewModalLabel" aria-hidden="true" data-bs-theme="dark">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: var(--bg-card); border: 1px solid var(--danger-red); color: var(--text-main);">
+                <div class="modal-header" style="border-bottom: 1px solid var(--grey-light);">
+                    <h5 class="modal-title" id="confirmDeleteReviewModalLabel">Confirmer la suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">Cette action est irreversible. Voulez-vous vraiment supprimer cet avis ?</p>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid var(--grey-light);">
+                    <button type="button" class="btn btn-outline-light rounded-0" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger rounded-0" id="confirm-delete-review">
                         <i class="bi bi-trash me-2"></i>Supprimer
                     </button>
                 </div>

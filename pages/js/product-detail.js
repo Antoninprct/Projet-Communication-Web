@@ -70,6 +70,27 @@ function renderRelated(currentProduct) {
     `).join("");
 }
 
+function formatReviewDate(value) {
+    if (!value) {
+        return "";
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    try {
+        return date.toLocaleDateString("fr-FR", {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+        });
+    } catch (error) {
+        return date.toISOString().slice(0, 10);
+    }
+}
+
 function renderReviews(product) {
     const host = document.getElementById("detail-reviews");
     if (!host) {
@@ -84,16 +105,122 @@ function renderReviews(product) {
 
     host.innerHTML = reviews.map((review) => {
         const note = Math.max(0, Math.min(5, Math.round(Number(review.note || 0))));
+        const reviewDate = formatReviewDate(review.created_at);
         return `
-      <article class="review-card">
+            <article class="review-card" data-review-id="${review.id}">
         <div class="review-head">
-          <strong>${review.auteur || "Anonyme"}</strong>
-          <span>${"★".repeat(note)}${"☆".repeat(5 - note)}</span>
+                    <div class="review-meta">
+                        <strong>${review.auteur || "Anonyme"}</strong>
+                        ${reviewDate ? `<span class="review-date">${reviewDate}</span>` : ""}
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span>${"★".repeat(note)}${"☆".repeat(5 - note)}</span>
+                        <div class="review-actions">
+                                <button type="button" data-review-action="edit" data-review-id="${review.id}">Editer</button>
+                                <button type="button" data-review-action="delete" data-review-id="${review.id}">Supprimer</button>
+                        </div>
+                    </div>
         </div>
         <p>${review.commentaire || "Sans commentaire."}</p>
       </article>
     `;
     }).join("");
+}
+
+function setReviewFormMode(mode, review) {
+    const reviewIdInput = document.getElementById("review-id");
+    const noteInput = document.getElementById("review-note");
+    const commentInput = document.getElementById("review-comment");
+    const submitBtn = document.getElementById("review-submit");
+    const cancelBtn = document.getElementById("review-cancel");
+
+    if (!reviewIdInput || !noteInput || !commentInput || !submitBtn || !cancelBtn) {
+        return;
+    }
+
+    if (mode === "edit" && review) {
+        reviewIdInput.value = String(review.id || "");
+        noteInput.value = String(review.note || "");
+        commentInput.value = review.commentaire || "";
+        submitBtn.textContent = "Mettre a jour";
+        cancelBtn.hidden = false;
+        setReviewRating(Number(review.note || 0));
+    } else {
+        reviewIdInput.value = "";
+        noteInput.value = "";
+        commentInput.value = "";
+        submitBtn.textContent = "Envoyer l'avis";
+        cancelBtn.hidden = true;
+        setReviewRating(0);
+    }
+}
+
+function setReviewRating(value) {
+    const noteInput = document.getElementById("review-note");
+    const buttons = document.querySelectorAll(".rating-star-button");
+    if (!noteInput || buttons.length === 0) {
+        return;
+    }
+
+    const rating = Math.max(0, Math.min(5, Number(value || 0)));
+    noteInput.value = rating ? String(rating) : "";
+
+    buttons.forEach((button) => {
+        const buttonRating = Number(button.getAttribute("data-rating") || 0);
+        const isActive = rating >= buttonRating && rating > 0;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
+}
+
+function readReviewFormData() {
+    const noteInput = document.getElementById("review-note");
+    const commentInput = document.getElementById("review-comment");
+
+    if (!noteInput || !commentInput) {
+        return null;
+    }
+
+    const noteValue = Number(noteInput.value);
+    const commentValue = commentInput.value.trim();
+
+    if (!noteValue || noteValue < 1 || noteValue > 5 || commentValue === "") {
+        return null;
+    }
+
+    return {
+        note: noteValue,
+        commentaire: commentValue
+    };
+}
+
+async function refreshReviews(productId) {
+    if (!window.CatalogApi) {
+        return;
+    }
+
+    try {
+        const [reviews, productMeta] = await Promise.all([
+            window.CatalogApi.fetchReviewsByProductId(productId),
+            window.CatalogApi.fetchProductById(productId)
+        ]);
+
+        const currentProduct = window.CURRENT_PRODUCT || {};
+        currentProduct.reviewsList = reviews;
+        currentProduct.reviews = productMeta.reviews || reviews.length;
+        currentProduct.rating = productMeta.rating;
+        window.CURRENT_PRODUCT = currentProduct;
+
+        renderReviews(currentProduct);
+
+        const ratingHost = document.getElementById("detail-rating");
+        if (ratingHost) {
+            const ratingValue = Math.max(0, Math.min(5, Math.round(Number(productMeta.rating || 0))));
+            ratingHost.innerHTML = `${"★".repeat(ratingValue)}${"☆".repeat(5 - ratingValue)} <span>(${currentProduct.reviews} avis)</span>`;
+        }
+    } catch (error) {
+        console.error("Failed to refresh reviews:", error);
+    }
 }
 
 async function renderProductDetail() {
@@ -286,65 +413,142 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    const reviewForm = document.getElementById("review-form");
+    if (reviewForm) {
+        reviewForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const productId = getProductIdFromRoute();
+            if (!window.CatalogApi || productId <= 0) {
+                return;
+            }
+
+            const data = readReviewFormData();
+            if (!data) {
+                showToast("REMPLIS TOUS LES CHAMPS", "bi bi-exclamation-circle");
+                return;
+            }
+
+            const reviewIdInput = document.getElementById("review-id");
+            const isEdit = reviewIdInput && reviewIdInput.value !== "";
+            const payload = {
+                product_id: productId,
+                note: data.note,
+                commentaire: data.commentaire,
+                user_id: 1
+            };
+
+            try {
+                if (isEdit) {
+                    await window.CatalogApi.updateReview(reviewIdInput.value, {
+                        note: data.note,
+                        commentaire: data.commentaire
+                    });
+                    showToast("AVIS MIS A JOUR", "bi bi-check2-circle");
+                } else {
+                    await window.CatalogApi.addReview(payload);
+                    showToast("AVIS ENVOYE", "bi bi-check2-circle");
+                }
+
+                setReviewFormMode("create");
+                await refreshReviews(productId);
+            } catch (error) {
+                console.error("Review submission failed:", error);
+                showToast("ERREUR", "bi bi-x-circle");
+            }
+        });
+    }
+
+    const reviewCancel = document.getElementById("review-cancel");
+    if (reviewCancel) {
+        reviewCancel.addEventListener("click", () => {
+            setReviewFormMode("create");
+        });
+    }
+
+    const ratingButtons = document.querySelectorAll(".rating-star-button");
+    ratingButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const rating = Number(button.getAttribute("data-rating") || 0);
+            setReviewRating(rating);
+        });
+    });
+
+    const reviewHost = document.getElementById("detail-reviews");
+    const confirmDeleteReviewModalEl = document.getElementById("confirmDeleteReviewModal");
+    const confirmDeleteReviewBtn = document.getElementById("confirm-delete-review");
+    let pendingReviewDeleteId = 0;
+
+    if (confirmDeleteReviewBtn) {
+        confirmDeleteReviewBtn.addEventListener("click", async () => {
+            const productId = getProductIdFromRoute();
+            if (!pendingReviewDeleteId || productId <= 0) {
+                return;
+            }
+
+            const originalText = confirmDeleteReviewBtn.innerHTML;
+            confirmDeleteReviewBtn.disabled = true;
+            confirmDeleteReviewBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Suppression...';
+
+            try {
+                await window.CatalogApi.deleteReview(pendingReviewDeleteId);
+                if (confirmDeleteReviewModalEl) {
+                    const deleteModal = bootstrap.Modal.getOrCreateInstance(confirmDeleteReviewModalEl);
+                    deleteModal.hide();
+                }
+                showToast("AVIS SUPPRIME", "bi bi-check2-circle");
+                await refreshReviews(productId);
+            } catch (error) {
+                console.error("Review deletion failed:", error);
+                showToast("ERREUR", "bi bi-x-circle");
+            } finally {
+                confirmDeleteReviewBtn.disabled = false;
+                confirmDeleteReviewBtn.innerHTML = originalText;
+                pendingReviewDeleteId = 0;
+            }
+        });
+    }
+
+    if (reviewHost) {
+        reviewHost.addEventListener("click", async (event) => {
+            const target = event.target.closest("[data-review-action]");
+            if (!target) {
+                return;
+            }
+
+            const action = target.getAttribute("data-review-action");
+            const reviewId = Number(target.getAttribute("data-review-id") || 0);
+            const productId = getProductIdFromRoute();
+            if (!action || !reviewId || productId <= 0) {
+                return;
+            }
+
+            const reviews = window.CURRENT_PRODUCT && Array.isArray(window.CURRENT_PRODUCT.reviewsList)
+                ? window.CURRENT_PRODUCT.reviewsList
+                : [];
+            const review = reviews.find((item) => Number(item.id) === reviewId);
+
+            if (action === "edit" && review) {
+                setReviewFormMode("edit", review);
+                const commentInput = document.getElementById("review-comment");
+                if (commentInput) {
+                    commentInput.focus();
+                }
+            }
+
+            if (action === "delete") {
+                if (!confirmDeleteReviewModalEl) {
+                    showToast("MODALE DE CONFIRMATION INDISPONIBLE", "bi bi-exclamation-triangle");
+                    return;
+                }
+
+                pendingReviewDeleteId = reviewId;
+                const deleteModal = bootstrap.Modal.getOrCreateInstance(confirmDeleteReviewModalEl);
+                deleteModal.show();
+            }
+        });
+    }
+
+    setReviewFormMode("create");
 });
 
-//chagement
-// === EXISTANT (ton code) ===
-// ... je garde tout ton code intact ...
-
-// 🔥 AJOUT AVIS
-async function submitReview(productId) {
-    const name = document.getElementById("review-name").value;
-    const comment = document.getElementById("review-comment").value;
-    const note = document.getElementById("review-note").value;
-
-    if (!name || !comment || !note) {
-        showToast("REMPLIS TOUS LES CHAMPS", "bi bi-exclamation-circle");
-        return;
-    }
-
-    try {
-        await window.CatalogApi.addReview({
-            produit_id: productId,
-            auteur: name,
-            commentaire: comment,
-            note: Number(note)
-        });
-
-        showToast("AVIS ENVOYE", "bi bi-check2-circle");
-
-        // reload
-        const reviews = await window.CatalogApi.fetchReviewsByProductId(productId);
-        renderReviews({ reviewsList: reviews });
-
-        // reset
-        document.getElementById("review-name").value = "";
-        document.getElementById("review-comment").value = "";
-        document.getElementById("review-note").value = "";
-
-    } catch (error) {
-        console.error(error);
-        showToast("ERREUR", "bi bi-x-circle");
-    }
-}
-
-// === DOM READY ===
-document.addEventListener("DOMContentLoaded", () => {
-    renderProductDetail();
-
-    const addButton = document.getElementById("detail-add-cart");
-    if (addButton) {
-        addButton.addEventListener("click", () => {
-            showToast("AJOUTE AU PANIER", "bi bi-check2-circle");
-        });
-    }
-
-    // 🔗 bouton avis
-    const reviewBtn = document.getElementById("submit-review");
-    if (reviewBtn) {
-        const productId = getProductIdFromRoute();
-        reviewBtn.addEventListener("click", () => {
-            submitReview(productId);
-        });
-    }
-});
