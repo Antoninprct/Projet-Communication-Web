@@ -106,6 +106,59 @@ function formatProduct(array $product): array
 }
 
 
+// Ajouter un produit
+
+function dbAddProduct(PDO $db, array $productData): int
+{
+    $stmt = $db->prepare('INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+
+    $stmt->execute([
+        $productData['nom'],
+        $productData['description'] ?? null,
+        $productData['prix'],
+        $productData['old_price'] ?? null,
+        $productData['stock'] ?? 0,
+        $productData['category'] ?? null,
+        $productData['type'] ?? null,
+        $productData['rating'] ?? 0,
+        $productData['tag'] ?? null,
+        $productData['promo'] ?? 0
+    ]);
+
+    return (int) $db->lastInsertId();
+}
+
+// Modifier un produit
+
+function dbModifyProduct(PDO $db, int $id, array $productData): bool
+{
+    $stmt = $db->prepare('UPDATE products SET nom = ?, description = ?, prix = ?, old_price = ?, stock = ?, category = ?, type = ?, rating = ?, tag = ?, promo = ? WHERE id = ?');
+
+    return $stmt->execute([
+        $productData['nom'],
+        $productData['description'] ?? null,
+        $productData['prix'],
+        $productData['old_price'] ?? null,
+        $productData['stock'] ?? 0,
+        $productData['category'] ?? null,
+        $productData['type'] ?? null,
+        $productData['rating'] ?? 0,
+        $productData['tag'] ?? null,
+        $productData['promo'] ?? 0,
+        $id
+    ]);
+}
+
+// Supprimer un produit
+
+function dbDeleteProduct(PDO $db, int $id): bool
+{
+    $stmt = $db->prepare('DELETE FROM products WHERE id = ?');
+
+    return $stmt->execute([$id]);
+}
+
+
 // Gérer les routes API /products
 
 function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
