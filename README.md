@@ -26,5 +26,12 @@ Projet: Boutique en ligne simplifiée
 
 - GET /backend/index.php/api/products/: retourne la liste des produits.
 - GET /backend/index.php/api/products/{id}: retourne un produit précis.
+- POST /backend/index.php/api/products/: ajoute un produit.
+- PUT /backend/index.php/api/products/{id}: modifie un produit.
+- DELETE /backend/index.php/api/products/{id}: supprime un produit.
+
 - GET /backend/index.php/reviews/?id={productId}: retourne les avis d'un produit.
 - GET /backend/index.php/api/reviews/?id={productId}: alias de la route reviews.
+- POST /backend/index.php/api/reviews/: ajoute un avis.
+- PUT /backend/index.php/api/reviews/?id={reviewId}: modifie un avis.
+- DELETE /backend/index.php/api/reviews/?id={reviewId}: supprime un avis.
