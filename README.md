@@ -15,6 +15,18 @@ Projet: Boutique en ligne simplifiée
 - SNIPERS
 - Autres
 
+## Installation
+
+1. Cloner le dépôt:
+```bash
+git clone https://github.com/Antoninprct/Projet-Communication-Web.git
+cd Projet-Communication-Web
+```
+2. Mettre les permissions pour la base de données:
+```bash
+sudo chmod -R 777 DB/
+```
+
 ## Pages du site
 
 - Accueil (index.php?page=home): présentation de la boutique, mise en avant des produits.
