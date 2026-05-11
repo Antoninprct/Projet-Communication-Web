@@ -27,6 +27,24 @@ cd Projet-Communication-Web
 sudo chmod -R 777 DB/
 ```
 
+3. Démarrer apache2
+```bash
+sudo service apache2 start
+```
+
+4. Démarrer serveur websocket
+```bash
+python3 ServSupport.py
+```
+
+## Comptes
+- Admin:
+    - Email: antoine@ghostops.local
+    - Mot de passe: admin123
+- Client:
+    - Email: bob@ghostops.local
+    - Mot de passe: client123
+
 ## Pages du site
 
 - Accueil (index.php?page=home): présentation de la boutique, mise en avant des produits.
