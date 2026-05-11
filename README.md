@@ -41,10 +41,10 @@ python3 ServSupport.py
 
 ## Comptes
 - Admin:
-    - Email: antoine@panpan.local
+    - Email: antoine@bawbaw.local
     - Mot de passe: admin123
 - Client:
-    - Email: bob@panpan.local
+    - Email: bob@bawbaw.local
     - Mot de passe: client123
 
 ## Pages du site

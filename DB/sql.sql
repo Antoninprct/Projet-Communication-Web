@@ -17,9 +17,9 @@ CREATE INDEX IF NOT EXISTS idx_user_email ON user(email);
 
 -- Utilisateurs
 INSERT INTO user (nom, email, mot_de_passe, role) VALUES
-('antoine', 'antoine@panpan.local', '$2y$10$tS..i73tsqFzNzxrjooZrere8aTa0InhzdnoynuuuDpU.sqgfcZT6', 'admin'),
-('bob', 'bob@panpan.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client'),
-('carol', 'carol@panpan.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client');
+('antoine', 'antoine@bawbaw.local', '$2y$10$tS..i73tsqFzNzxrjooZrere8aTa0InhzdnoynuuuDpU.sqgfcZT6', 'admin'),
+('bob', 'bob@bawbaw.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client'),
+('carol', 'carol@bawbaw.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client');
 
 -- =========================
 -- TABLE PRODUCTS

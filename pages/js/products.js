@@ -14,7 +14,7 @@ function getAuthToken() {
     }
 
     try {
-        const raw = localStorage.getItem("panpan.auth");
+        const raw = localStorage.getItem("bawbaw.auth");
         if (raw) {
             const parsed = JSON.parse(raw);
             if (parsed && typeof parsed.token === "string") {
@@ -31,7 +31,7 @@ function getAuthToken() {
 function getAuthRole() {
     return window.AUTH_ROLE || (() => {
         try {
-            const raw = localStorage.getItem("panpan.auth");
+            const raw = localStorage.getItem("bawbaw.auth");
             if (raw) {
                 const parsed = JSON.parse(raw);
                 return parsed && parsed.role ? parsed.role : null;

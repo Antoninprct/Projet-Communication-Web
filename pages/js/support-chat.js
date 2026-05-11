@@ -36,7 +36,7 @@ class SupportChat {
 
     _resolveCurrentUser() {
         try {
-            const raw = localStorage.getItem("panpan.auth");
+            const raw = localStorage.getItem("bawbaw.auth");
             if (raw) {
                 const parsed = JSON.parse(raw);
                 if (parsed && parsed.user) {
