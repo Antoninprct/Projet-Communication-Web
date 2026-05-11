@@ -40,8 +40,8 @@ require __DIR__ . '/partials/url.php';
             <div class="container position-relative">
                 <div class="row">
                     <div class="col-lg-7">
-                        <span class="hero-badge">TACTICAL AIRSOFT GEAR // EDITION 2024</span>
-                        <h1 class="hero-title">DOMINEZ<br><span class="accent-word">LE TERRAIN</span><br><span class="grey-word">OPERATIONS</span></h1>
+                        <span class="hero-badge">VENTE AIRSOFT // EDITION 2026</span>
+                        <h1 class="hero-title">PAS<br><span class="accent-word">DE SOFT</span><br><span class="grey-word">QUE DU HARD</span></h1>
                         <p class="hero-sub">&gt; EQUIPEMENT PROFESSIONNEL POUR JOUEURS AVANCES<br>&gt; REPLIQUES CERTIFIEES ET ACCESSOIRES TACTIQUES<br>&gt; LIVRAISON SECURISEE SOUS 48H</p>
                         <div class="hero-cta">
                             <a class="btn-tactical" href="<?= app_url('index.php?page=products') ?>">Voir l'arsenal</a>
@@ -57,14 +57,14 @@ require __DIR__ . '/partials/url.php';
                 <div class="row">
                     <div class="col-6 col-md-3">
                         <div class="stat-item">
-                            <div class="stat-num">500+</div>
+                            <div class="stat-num">500k+</div>
                             <div class="stat-label">Produits en stock</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="stat-item">
-                            <div class="stat-num">12K+</div>
-                            <div class="stat-label">Clients equipes</div>
+                            <div class="stat-num">120K+</div>
+                            <div class="stat-label">Clients</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
@@ -87,18 +87,18 @@ require __DIR__ . '/partials/url.php';
             <div class="container py-3">
                 <div class="row mb-4">
                     <div class="col-lg-6">
-                        <div class="section-label">Pourquoi GHOST OPS</div>
+                        <div class="section-label">Pourquoi BAWBAW ACADEMY</div>
                         <h2 class="section-title">L'EQUIPEMENT DES<br><span class="text-accent">VRAIS OPERATEURS</span></h2>
-                    </div>
+                    </div>  
                     <div class="col-lg-6 d-flex align-items-end">
-                        <p class="text-muted-ghost feature-intro">Depuis 2012, Ghost Ops fournit aux airsofteurs francais du materiel selectionne selon des criteres de performance, durabilite et realisme.</p>
+                        <p class="text-muted-ghost feature-intro">Depuis 2012, BawBaw Academy fournit aux airsofteurs francais du materiel selectionne selon des criteres de performance, durabilite et realisme.</p>
                     </div>
                 </div>
                 <div class="row g-4">
                     <div class="col-md-6 col-lg-3">
                         <article class="feature-card"><i class="bi bi-shield-check feature-icon"></i>
-                            <h3 class="feature-title">Qualite testee</h3>
-                            <p class="feature-text">Selection validee en conditions reelles.</p>
+                            <h3 class="feature-title">Qualite testée</h3>
+                            <p class="feature-text">Selection validée en conditions reelles.</p>
                         </article>
                     </div>
                     <div class="col-md-6 col-lg-3">
@@ -110,13 +110,13 @@ require __DIR__ . '/partials/url.php';
                     <div class="col-md-6 col-lg-3">
                         <article class="feature-card"><i class="bi bi-gear feature-icon"></i>
                             <h3 class="feature-title">Configurable</h3>
-                            <p class="feature-text">Accessoires et upgrades selon votre style de jeu.</p>
+                            <p class="feature-text">Accessoires et améliorations selon votre style de jeu.</p>
                         </article>
                     </div>
                     <div class="col-md-6 col-lg-3">
                         <article class="feature-card"><i class="bi bi-headset feature-icon"></i>
-                            <h3 class="feature-title">Support terrain</h3>
-                            <p class="feature-text">Aide materiel avant et apres achat.</p>
+                            <h3 class="feature-title">Support</h3>
+                            <p class="feature-text">Service après vente.</p>
                         </article>
                     </div>
                 </div>

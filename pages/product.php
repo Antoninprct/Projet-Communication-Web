@@ -8,7 +8,7 @@ require __DIR__ . '/partials/url.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOST OPS - Produit</title>
+    <title>BAWBAW ACADEMY - Produit</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@ require __DIR__ . '/partials/url.php';
                     <span id="detail-price-old" class="detail-price-old"></span>
                 </div>
                 <p id="detail-desc" class="detail-desc"></p>
-                <div class="alert-tactical mb-3">Produit terrain teste, compatible parties loisir 18+.</div>
+                <div class="alert-tactical mb-3">Produit terrain teste, compatible parties loisir 10+.</div>
                 <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
                     <button class="btn-tactical" type="button" id="detail-add-cart"><i class="bi bi-bag-plus me-2"></i>Ajouter au panier</button>
                     <a class="btn-outline-tactical" href="<?= app_url('index.php?page=products') ?>">Retour catalogue</a>

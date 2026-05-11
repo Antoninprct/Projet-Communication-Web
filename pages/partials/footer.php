@@ -2,8 +2,8 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-4">
-                <div class="footer-brand">GHOST<span>OPS</span></div>
-                <p class="mt-3 footer-note">L'equipement des vrais operateurs. Repliques et gear tactique depuis 2012. Base a Nantes, livraison France et Europe.</p>
+                <div class="footer-brand">BAWBAW<span>ACADEMY</span></div>
+                <p class="mt-3 footer-note">L'equipement des vrais operateurs. Repliques et équipements tactiques depuis 2012. Base a Nantes, livraison France et Europe.</p>
                 <div class="mt-3 d-flex gap-3">
                     <a href="#" class="text-accent fs-5"><i class="bi bi-instagram"></i></a>
                     <a href="#" class="text-accent fs-5"><i class="bi bi-facebook"></i></a>
@@ -15,7 +15,6 @@
                 <div class="section-label mb-3">Navigation</div>
                 <a class="footer-link" href="<?= app_url('index.php?page=home') ?>">Accueil</a>
                 <a class="footer-link" href="<?= app_url('index.php?page=products') ?>">Arsenal</a>
-                <a class="footer-link" href="<?= app_url('index.php?page=auth') ?>">Mon compte</a>
                 <a class="footer-link" href="#">A propos</a>
             </div>
             <div class="col-6 col-lg-2">
@@ -34,6 +33,6 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom text-center">© 2026 GHOST OPS TACTICAL - TOUS DROITS RESERVES - VENTE RESERVEE AUX +18 ANS</div>
+        <div class="footer-bottom text-center">© 2026 BAWBAW ACADEMY TACTICAL - TOUS DROITS RESERVES - VENTE RESERVEE AUX +10 ANS</div>
     </div>
 </footer>

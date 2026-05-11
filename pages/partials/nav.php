@@ -1,6 +1,6 @@
 <nav class="navbar navbar-ghost navbar-expand-lg px-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<?= app_url('index.php') ?>">GHOST<span>OPS</span></a>
+        <a class="navbar-brand" href="<?= app_url('index.php') ?>">BAWBAW<span>ACADEMY</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Menu principal">
             <span class="navbar-toggler-icon"></span>
         </button>

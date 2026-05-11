@@ -8,7 +8,7 @@ require __DIR__ . '/partials/url.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOST OPS - Authentification</title>
+    <title>BAWBAW ACADEMY - Authentification</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@ require __DIR__ . '/partials/url.php';
             <div class="login-corner bl"></div>
             <div class="login-corner br"></div>
 
-            <div class="login-logo">GHOST<span>OPS</span></div>
+            <div class="login-logo">BAWBAW<span>ACADEMY</span></div>
             <div class="login-subtitle">ACCES OPERATEUR</div>
 
             <div class="auth-tabs">
@@ -38,7 +38,7 @@ require __DIR__ . '/partials/url.php';
 
             <form id="form-login">
                 <label class="form-label-tactical" for="login-email">Email</label>
-                <input class="form-control-tactical w-100 mb-3" id="login-email" type="email" placeholder="operator@ghostops.local">
+                <input class="form-control-tactical w-100 mb-3" id="login-email" type="email" placeholder="operator@bawbaw.local">
                 <label class="form-label-tactical" for="login-password">Mot de passe</label>
                 <input class="form-control-tactical w-100 mb-4" id="login-password" type="password" placeholder="********">
                 <button class="btn-tactical w-100" type="submit">Connexion</button>
@@ -48,7 +48,7 @@ require __DIR__ . '/partials/url.php';
                 <label class="form-label-tactical" for="register-name">Nom operateur</label>
                 <input class="form-control-tactical w-100 mb-3" id="register-name" type="text" placeholder="Nom d'equipe">
                 <label class="form-label-tactical" for="register-email">Email</label>
-                <input class="form-control-tactical w-100 mb-3" id="register-email" type="email" placeholder="operator@ghostops.local">
+                <input class="form-control-tactical w-100 mb-3" id="register-email" type="email" placeholder="operator@bawbaw.local">
                 <label class="form-label-tactical" for="register-password">Mot de passe</label>
                 <input class="form-control-tactical w-100 mb-4" id="register-password" type="password" placeholder="********">
                 <button class="btn-tactical w-100" type="submit">Creer le compte</button>

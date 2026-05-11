@@ -43,7 +43,7 @@ $current_user = [
 >
     <header class="support-header">
         <div class="support-header__info">
-            <strong>Support GHOST OPS</strong>
+            <strong>Support BAWBAW ACADEMY</strong>
 
             <p class="support-subtitle">
                 <span

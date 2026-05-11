@@ -8,7 +8,7 @@ require __DIR__ . '/partials/url.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHOST OPS - Arsenal</title>
+    <title>BAWBAW ACADEMY - Arsenal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -24,8 +24,8 @@ require __DIR__ . '/partials/url.php';
         <section class="page-header">
             <div class="container">
                 <div class="section-label">Inventaire complet</div>
-                <h1 class="section-title">L'ARSENAL <span class="text-accent">GHOST OPS</span></h1>
-                <p class="header-sub">&gt; 48 PRODUITS DISPONIBLES // LIVRAISON EXPRESS 48H</p>
+                <h1 class="section-title">L'ARSENAL <span class="text-accent">BAWBAW ACADEMY</span></h1>
+                <p class="header-sub">&gt; 15+ PRODUITS DISPONIBLES // LIVRAISON EXPRESS 48H</p>
             </div>
         </section>
 
