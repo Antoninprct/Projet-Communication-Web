@@ -96,10 +96,35 @@
         return `${basePath}/backend/index.php/api/reviews`;
     }
 
+    function getAuthToken() {
+        if (window.AUTH_TOKEN) {
+            return window.AUTH_TOKEN;
+        }
+        try {
+            const raw = localStorage.getItem("ghostops.auth");
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed.token === "string") {
+                    return parsed.token;
+                }
+            }
+        } catch (error) {
+            return null;
+        }
+
+        return null;
+    }
+
+    function buildAuthHeaders() {
+        const token = getAuthToken();
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    }
+
     async function fetchJson(url) {
         const response = await fetch(url, {
             headers: {
-                Accept: "application/json"
+                Accept: "application/json",
+                ...buildAuthHeaders()
             }
         });
 
@@ -138,6 +163,7 @@
 
         return payload.data.map((review) => ({
             id: Number(review.id ?? 0),
+            user_id: Number(review.user_id ?? 0),
             note: Number(review.note ?? 0),
             commentaire: String(review.commentaire ?? ""),
             auteur: String(review.auteur ?? "Anonyme"),
@@ -150,7 +176,8 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json"
+                Accept: "application/json",
+                ...buildAuthHeaders()
             },
             body: JSON.stringify(reviewPayload)
         });
@@ -168,7 +195,8 @@
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json"
+                Accept: "application/json",
+                ...buildAuthHeaders()
             },
             body: JSON.stringify(reviewPayload)
         });
@@ -185,7 +213,8 @@
         const response = await fetch(`${buildReviewsBaseUrl()}/?id=${encodeURIComponent(String(id))}`, {
             method: "DELETE",
             headers: {
-                Accept: "application/json"
+                Accept: "application/json",
+                ...buildAuthHeaders()
             }
         });
 

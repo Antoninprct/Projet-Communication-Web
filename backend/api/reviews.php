@@ -7,6 +7,7 @@ function dbRequestReviews(PDO $db, int $productId): array
     $stmt = $db->prepare('
         SELECT
             r.id,
+            r.user_id,
             r.note,
             r.commentaire,
             r.created_at,
@@ -21,6 +22,16 @@ function dbRequestReviews(PDO $db, int $productId): array
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function dbGetReviewById(PDO $db, int $id): ?array
+{
+    $stmt = $db->prepare('SELECT id, user_id, product_id FROM reviews WHERE id = :id');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $review = $stmt->fetch(PDO::FETCH_ASSOC);
+    return is_array($review) ? $review : null;
 }
 
 // Ajouter un avis
@@ -85,21 +96,29 @@ function handleReviewsRoute(PDO $pdo, string $method): void
             break;
 
         case 'POST':
+            $user = requireAuth($pdo, [ROLE_CLIENT, ROLE_ADMIN]);
             $input = json_decode(file_get_contents('php://input'), true);
             if (!is_array($input) || empty($input['product_id']) || !isset($input['note'])) {
                 sendJsonResponse(400, ['success' => false, 'message' => 'Données invalides']);
             }
-            // Temporaire client_id=1 si pas géré
-            $input['user_id'] = $input['user_id'] ?? 1;
-            
+            $input['user_id'] = (int) $user['id'];
+
             $id = dbAddReview($pdo, $input);
             sendJsonResponse(201, ['success' => true, 'data' => ['id' => $id]]);
             break;
 
         case 'PUT':
+            $user = requireAuth($pdo, [ROLE_CLIENT, ROLE_ADMIN]);
             $idParam = $_GET['id'] ?? null;
             if ($idParam === null || !preg_match('/^\d+$/', (string) $idParam)) {
                 sendJsonResponse(400, ['success' => false, 'message' => 'Missing or invalid review id']);
+            }
+            $review = dbGetReviewById($pdo, (int) $idParam);
+            if ($review === null) {
+                sendJsonResponse(404, ['success' => false, 'message' => 'Avis non trouvé']);
+            }
+            if ($user['role'] !== ROLE_ADMIN && (int) $review['user_id'] !== (int) $user['id']) {
+                sendJsonResponse(401, ['success' => false, 'message' => 'Role insuffisant']);
             }
             $input = json_decode(file_get_contents('php://input'), true);
             if (!is_array($input) || !isset($input['note'])) {
@@ -114,9 +133,17 @@ function handleReviewsRoute(PDO $pdo, string $method): void
             break;
 
         case 'DELETE':
+            $user = requireAuth($pdo, [ROLE_CLIENT, ROLE_ADMIN]);
             $idParam = $_GET['id'] ?? null;
             if ($idParam === null || !preg_match('/^\d+$/', (string) $idParam)) {
                 sendJsonResponse(400, ['success' => false, 'message' => 'Missing or invalid review id']);
+            }
+            $review = dbGetReviewById($pdo, (int) $idParam);
+            if ($review === null) {
+                sendJsonResponse(404, ['success' => false, 'message' => 'Avis non trouvé']);
+            }
+            if ($user['role'] !== ROLE_ADMIN && (int) $review['user_id'] !== (int) $user['id']) {
+                sendJsonResponse(401, ['success' => false, 'message' => 'Role insuffisant']);
             }
             $success = dbDeleteReview($pdo, (int)$idParam);
             if ($success) {

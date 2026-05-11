@@ -4,17 +4,22 @@
 CREATE TABLE IF NOT EXISTS user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     mot_de_passe TEXT NOT NULL,
-    role TEXT NOT NULL DEFAULT 'user'
+    role TEXT NOT NULL DEFAULT 'user',
+    token TEXT,
+    token_expires INTEGER,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_nom ON user(nom);
+CREATE INDEX IF NOT EXISTS idx_user_email ON user(email);
 
 -- Utilisateurs
-INSERT INTO user (nom, mot_de_passe, role) VALUES
-('antoine', 'legoat', 'admin'),
-('bob', 'hashed_password_2', 'client'),
-('carol', 'hashed_password_3', 'client');
+INSERT INTO user (nom, email, mot_de_passe, role) VALUES
+('antoine', 'antoine@ghostops.local', '$2y$10$tS..i73tsqFzNzxrjooZrere8aTa0InhzdnoynuuuDpU.sqgfcZT6', 'admin'),
+('bob', 'bob@ghostops.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client'),
+('carol', 'carol@ghostops.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client');
 
 -- =========================
 -- TABLE PRODUCTS

@@ -19,6 +19,51 @@ function getApiBaseUrl() {
     return `${basePath}/backend/index.php/api`;
 }
 
+function getStoredAuth() {
+    if (window.AUTH_TOKEN || window.AUTH_ROLE || window.AUTH_USER) {
+        return {
+            token: window.AUTH_TOKEN || null,
+            role: window.AUTH_ROLE || null,
+            user: window.AUTH_USER || null
+        };
+    }
+
+    try {
+        const raw = localStorage.getItem("ghostops.auth");
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            return {
+                token: parsed && parsed.token ? parsed.token : null,
+                role: parsed && parsed.role ? parsed.role : null,
+                user: parsed && parsed.user ? parsed.user : null
+            };
+        }
+    } catch (error) {
+        return { token: null, role: null, user: null };
+    }
+
+    return { token: null, role: null, user: null };
+}
+
+function buildAuthHeaders() {
+    const auth = getStoredAuth();
+    return auth.token ? { Authorization: `Bearer ${auth.token}` } : {};
+}
+
+function canManageReviews(review) {
+    const auth = getStoredAuth();
+    if (!auth.role) {
+        return false;
+    }
+    if (auth.role === "admin") {
+        return true;
+    }
+    if (auth.role === "client" && auth.user && review && Number(review.user_id) === Number(auth.user.id)) {
+        return true;
+    }
+    return false;
+}
+
 async function extractApiErrorMessage(response) {
     try {
         const payload = await response.json();
@@ -106,6 +151,7 @@ function renderReviews(product) {
     host.innerHTML = reviews.map((review) => {
         const note = Math.max(0, Math.min(5, Math.round(Number(review.note || 0))));
         const reviewDate = formatReviewDate(review.created_at);
+        const showActions = canManageReviews(review);
         return `
             <article class="review-card" data-review-id="${review.id}">
         <div class="review-head">
@@ -115,10 +161,12 @@ function renderReviews(product) {
                     </div>
                     <div class="d-flex align-items-center gap-2">
                         <span>${"★".repeat(note)}${"☆".repeat(5 - note)}</span>
-                        <div class="review-actions">
+                        ${showActions ? `
+                            <div class="review-actions">
                                 <button type="button" data-review-action="edit" data-review-id="${review.id}">Editer</button>
                                 <button type="button" data-review-action="delete" data-review-id="${review.id}">Supprimer</button>
-                        </div>
+                            </div>
+                        ` : ""}
                     </div>
         </div>
         <p>${review.commentaire || "Sans commentaire."}</p>
@@ -287,6 +335,17 @@ async function renderProductDetail() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    const auth = getStoredAuth();
+    const adminActions = document.getElementById("admin-actions-container");
+    if (adminActions && auth.role !== "admin") {
+        adminActions.classList.add("d-none");
+    }
+
+    const reviewForm = document.getElementById("review-form");
+    if (reviewForm && auth.role !== "client" && auth.role !== "admin") {
+        reviewForm.classList.add("d-none");
+    }
+
     renderProductDetail();
 
     const addButton = document.getElementById("detail-add-cart");
@@ -319,7 +378,12 @@ document.addEventListener("DOMContentLoaded", () => {
             confirmDeleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Suppression...';
 
             try {
-                const res = await fetch(`${getApiBaseUrl()}/products/${id}`, { method: "DELETE" });
+                const res = await fetch(`${getApiBaseUrl()}/products/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        ...buildAuthHeaders()
+                    }
+                });
                 if (res.ok) {
                     if (confirmDeleteModalEl) {
                         const deleteModal = bootstrap.Modal.getOrCreateInstance(confirmDeleteModalEl);
@@ -390,7 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 const res = await fetch(`${getApiBaseUrl()}/products/${id}`, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", ...buildAuthHeaders() },
                     body: JSON.stringify(payload)
                 });
                 if (res.ok) {
@@ -414,7 +478,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const reviewForm = document.getElementById("review-form");
     if (reviewForm) {
         reviewForm.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -434,8 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const payload = {
                 product_id: productId,
                 note: data.note,
-                commentaire: data.commentaire,
-                user_id: 1
+                commentaire: data.commentaire
             };
 
             try {
