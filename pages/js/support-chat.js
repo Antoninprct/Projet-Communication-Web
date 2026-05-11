@@ -35,6 +35,20 @@ class SupportChat {
     }
 
     _resolveCurrentUser() {
+        try {
+            const raw = localStorage.getItem("ghostops.auth");
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && parsed.user) {
+                    return {
+                        id: parsed.user.id || crypto.randomUUID(),
+                        login: parsed.user.name || parsed.user.email || "Operateur",
+                        role: parsed.role || "client",
+                    };
+                }
+            }
+        } catch (_) {}
+
         const meta = document.querySelector('meta[name="chat-user"]');
 
         if (meta) {
