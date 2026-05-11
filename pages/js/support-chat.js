@@ -36,7 +36,7 @@ class SupportChat {
 
     _resolveCurrentUser() {
         try {
-            const raw = localStorage.getItem("ghostops.auth");
+            const raw = localStorage.getItem("bawbaw.auth");
             if (raw) {
                 const parsed = JSON.parse(raw);
                 if (parsed && parsed.user) {
@@ -47,14 +47,14 @@ class SupportChat {
                     };
                 }
             }
-        } catch (_) {}
+        } catch (_) { }
 
         const meta = document.querySelector('meta[name="chat-user"]');
 
         if (meta) {
             try {
                 return JSON.parse(meta.getAttribute("content"));
-            } catch (_) {}
+            } catch (_) { }
         }
 
         if (window.CHAT_USER) {

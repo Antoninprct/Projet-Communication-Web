@@ -1,7 +1,7 @@
 (function () {
     function getStoredAuth() {
         try {
-            const raw = localStorage.getItem("ghostops.auth");
+            const raw = localStorage.getItem("bawbaw.auth");
             if (!raw) {
                 return null;
             }
@@ -17,7 +17,7 @@
     }
 
     function clearAuth() {
-        localStorage.removeItem("ghostops.auth");
+        localStorage.removeItem("bawbaw.auth");
         window.AUTH_TOKEN = null;
         window.AUTH_ROLE = null;
         window.AUTH_USER = null;

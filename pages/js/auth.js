@@ -39,7 +39,7 @@ function loadAuthState() {
     }
 
     try {
-        const raw = localStorage.getItem("ghostops.auth");
+        const raw = localStorage.getItem("bawbaw.auth");
         if (!raw) {
             return;
         }
@@ -58,7 +58,7 @@ function saveAuthState(payload) {
     window.AUTH_ROLE = payload.role;
     window.AUTH_USER = payload.user;
 
-    localStorage.setItem("ghostops.auth", JSON.stringify({
+    localStorage.setItem("bawbaw.auth", JSON.stringify({
         token: payload.token,
         role: payload.role,
         user: payload.user

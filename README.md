@@ -2,7 +2,9 @@
 Lien GitHub https://github.com/Antoninprct/Projet-Communication-Web
 
 Antonin Percot: Responsable front-end
+
 Antoine Fribault: Responsable back-end
+
 Dorian Desmars: Responsable Git
 
 Projet: Boutique en ligne simplifiée
@@ -39,10 +41,10 @@ python3 ServSupport.py
 
 ## Comptes
 - Admin:
-    - Email: antoine@ghostops.local
+    - Email: antoine@bawbaw.local
     - Mot de passe: admin123
 - Client:
-    - Email: bob@ghostops.local
+    - Email: bob@bawbaw.local
     - Mot de passe: client123
 
 ## Pages du site
@@ -65,3 +67,5 @@ python3 ServSupport.py
 - POST /backend/index.php/api/reviews/: ajoute un avis.
 - PUT /backend/index.php/api/reviews/?id={reviewId}: modifie un avis.
 - DELETE /backend/index.php/api/reviews/?id={reviewId}: supprime un avis.
+
+- POST /backend/index.php/api/login: authentifie un utilisateur.
