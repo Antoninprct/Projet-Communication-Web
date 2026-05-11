@@ -91,6 +91,11 @@
         return `${basePath}/backend/index.php/api/reviews/?id=${encodeURIComponent(String(id))}`;
     }
 
+    function buildReviewsBaseUrl() {
+        const basePath = getBasePath();
+        return `${basePath}/backend/index.php/api/reviews`;
+    }
+
     async function fetchJson(url) {
         const response = await fetch(url, {
             headers: {
@@ -140,10 +145,64 @@
         }));
     }
 
+    async function addReview(reviewPayload) {
+        const response = await fetch(buildReviewsBaseUrl(), {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(reviewPayload)
+        });
+
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    async function updateReview(reviewId, reviewPayload) {
+        const id = Number(reviewId);
+        const response = await fetch(`${buildReviewsBaseUrl()}/?id=${encodeURIComponent(String(id))}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(reviewPayload)
+        });
+
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    async function deleteReview(reviewId) {
+        const id = Number(reviewId);
+        const response = await fetch(`${buildReviewsBaseUrl()}/?id=${encodeURIComponent(String(id))}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    }
+
     window.CatalogApi = {
         fetchProducts,
         fetchProductById,
         fetchReviewsByProductId,
+        addReview,
+        updateReview,
+        deleteReview,
         normalizeProduct
     };
 })();
