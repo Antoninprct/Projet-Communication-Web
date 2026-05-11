@@ -101,7 +101,7 @@
             return window.AUTH_TOKEN;
         }
         try {
-            const raw = localStorage.getItem("ghostops.auth");
+            const raw = localStorage.getItem("panpan.auth");
             if (raw) {
                 const parsed = JSON.parse(raw);
                 if (parsed && typeof parsed.token === "string") {

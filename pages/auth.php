@@ -38,7 +38,7 @@ require __DIR__ . '/partials/url.php';
 
             <form id="form-login">
                 <label class="form-label-tactical" for="login-email">Email</label>
-                <input class="form-control-tactical w-100 mb-3" id="login-email" type="email" placeholder="operator@ghostops.local">
+                <input class="form-control-tactical w-100 mb-3" id="login-email" type="email" placeholder="operator@panpan.local">
                 <label class="form-label-tactical" for="login-password">Mot de passe</label>
                 <input class="form-control-tactical w-100 mb-4" id="login-password" type="password" placeholder="********">
                 <button class="btn-tactical w-100" type="submit">Connexion</button>
@@ -48,7 +48,7 @@ require __DIR__ . '/partials/url.php';
                 <label class="form-label-tactical" for="register-name">Nom operateur</label>
                 <input class="form-control-tactical w-100 mb-3" id="register-name" type="text" placeholder="Nom d'equipe">
                 <label class="form-label-tactical" for="register-email">Email</label>
-                <input class="form-control-tactical w-100 mb-3" id="register-email" type="email" placeholder="operator@ghostops.local">
+                <input class="form-control-tactical w-100 mb-3" id="register-email" type="email" placeholder="operator@panpan.local">
                 <label class="form-label-tactical" for="register-password">Mot de passe</label>
                 <input class="form-control-tactical w-100 mb-4" id="register-password" type="password" placeholder="********">
                 <button class="btn-tactical w-100" type="submit">Creer le compte</button>

@@ -29,7 +29,7 @@ function getStoredAuth() {
     }
 
     try {
-        const raw = localStorage.getItem("ghostops.auth");
+        const raw = localStorage.getItem("panpan.auth");
         if (raw) {
             const parsed = JSON.parse(raw);
             return {

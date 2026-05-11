@@ -39,10 +39,10 @@ python3 ServSupport.py
 
 ## Comptes
 - Admin:
-    - Email: antoine@ghostops.local
+    - Email: antoine@panpan.local
     - Mot de passe: admin123
 - Client:
-    - Email: bob@ghostops.local
+    - Email: bob@panpan.local
     - Mot de passe: client123
 
 ## Pages du site
@@ -65,3 +65,5 @@ python3 ServSupport.py
 - POST /backend/index.php/api/reviews/: ajoute un avis.
 - PUT /backend/index.php/api/reviews/?id={reviewId}: modifie un avis.
 - DELETE /backend/index.php/api/reviews/?id={reviewId}: supprime un avis.
+
+- POST /backend/index.php/api/login: authentifie un utilisateur.
