@@ -8,6 +8,46 @@ function getApiBaseUrl() {
     return `${basePath}/backend/index.php/api`;
 }
 
+function getAuthToken() {
+    if (window.AUTH_TOKEN) {
+        return window.AUTH_TOKEN;
+    }
+
+    try {
+        const raw = localStorage.getItem("ghostops.auth");
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.token === "string") {
+                return parsed.token;
+            }
+        }
+    } catch (error) {
+        return null;
+    }
+
+    return null;
+}
+
+function getAuthRole() {
+    return window.AUTH_ROLE || (() => {
+        try {
+            const raw = localStorage.getItem("ghostops.auth");
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                return parsed && parsed.role ? parsed.role : null;
+            }
+        } catch (error) {
+            return null;
+        }
+        return null;
+    })();
+}
+
+function buildAuthHeaders() {
+    const token = getAuthToken();
+    return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 // =======================
 // FORMAT PRIX
 // =======================
@@ -200,6 +240,12 @@ async function loadProducts() {
 // INIT
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
+    const adminActions = document.getElementById("admin-actions");
+    const role = getAuthRole();
+    if (adminActions && role !== "admin") {
+        adminActions.classList.add("d-none");
+    }
+
     bindEvents();
     loadProducts();
 
@@ -227,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 const response = await fetch(`${getApiBaseUrl()}/products/`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', ...buildAuthHeaders() },
                     body: JSON.stringify(payload)
                 });
 

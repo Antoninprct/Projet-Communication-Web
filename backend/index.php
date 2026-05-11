@@ -22,6 +22,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
 }
 
 require __DIR__ . '/database.php';
+require __DIR__ . '/api/auth.php';
+require __DIR__ . '/api/login.php';
 require __DIR__ . '/api/products.php';
 require __DIR__ . '/api/reviews.php';
 
@@ -42,6 +44,11 @@ if (str_starts_with($requestPath, '/index.php')) {
 }
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+// Route login
+if (preg_match('#^/api/login/?$#', $requestPath)) {
+    handleLoginRoute($pdo, $method);
+}
 
 // Route produits
 if (preg_match('#^/api/products/?$#', $requestPath)) {

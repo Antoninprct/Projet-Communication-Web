@@ -38,7 +38,7 @@ function dbRequestProducts(PDO $db): array
 }
 
 
- //Récupérer un produit par son ID
+//Récupérer un produit par son ID
 
 function dbRequestProduct(PDO $db, int $id): ?array
 {
@@ -92,15 +92,15 @@ function formatProduct(array $product): array
         'description'   => $product['description'] ?? null,
         'prix'          => number_format((float)$product['prix'], 2, '.', ''),
         'old_price'     => $product['old_price'] !== null
-                            ? number_format((float)$product['old_price'], 2, '.', '')
-                            : null,
+            ? number_format((float)$product['old_price'], 2, '.', '')
+            : null,
         'stock'         => (int)   $product['stock'],
         'category'      => $product['category'] ?? null,
         'type'          => $product['type']     ?? null,
         'rating'        => (int)   ($product['rating'] ?? 0),
         'avg_rating'    => $product['avg_rating'] !== null
-                            ? (float)$product['avg_rating']
-                            : null,
+            ? (float)$product['avg_rating']
+            : null,
         'reviews_count' => (int)   ($product['reviews_count'] ?? 0),
         'tag'           => $product['tag']   ?? null,
         'promo'         => (bool)  ($product['promo'] ?? false),
@@ -213,6 +213,7 @@ function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
             break;
 
         case 'POST':
+            requireAuth($pdo, [ROLE_ADMIN]);
             $input = json_decode(file_get_contents('php://input'), true);
             if (!is_array($input) || empty($input['nom']) || !isset($input['prix'])) {
                 sendJsonResponse(400, ['success' => false, 'message' => 'Données invalides']);
@@ -222,6 +223,7 @@ function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
             break;
 
         case 'PUT':
+            requireAuth($pdo, [ROLE_ADMIN]);
             if ($idSegment === null || !preg_match('/^\d+$/', $idSegment)) {
                 sendJsonResponse(400, ['success' => false, 'message' => 'Invalid product id']);
             }
@@ -238,6 +240,7 @@ function handleProductsRoute(PDO $pdo, string $method, ?string $idSegment): void
             break;
 
         case 'DELETE':
+            requireAuth($pdo, [ROLE_ADMIN]);
             if ($idSegment === null || !preg_match('/^\d+$/', $idSegment)) {
                 sendJsonResponse(400, ['success' => false, 'message' => 'Invalid product id']);
             }
