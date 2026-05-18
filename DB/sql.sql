@@ -1,6 +1,6 @@
--- =========================
+
 -- TABLE USERS
--- =========================
+
 CREATE TABLE IF NOT EXISTS user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
@@ -21,9 +21,9 @@ INSERT INTO user (nom, email, mot_de_passe, role) VALUES
 ('bob', 'bob@bawbaw.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client'),
 ('carol', 'carol@bawbaw.local', '$2y$10$fR.G82X5qW3MuU6c8O7AYuqKmvhSx61/P3AA6OOlOuxYGXM3Y4IqO', 'client');
 
--- =========================
+
 -- TABLE PRODUCTS
--- =========================
+
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nom TEXT NOT NULL,
@@ -42,62 +42,59 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE INDEX IF NOT EXISTS idx_products_nom ON products(nom);
 
--- =========================
+
 -- AUTRE
 -- Toutes les armes ne rentrant pas dans une catégorie précise
--- =========================
+
 INSERT INTO products (nom, description, prix, stock, category) VALUES
 ('bazooka', 'pas au dessus de 2 joule par contre', 500.99, 1, 'Autre');
 
--- =========================
+
 -- FUSILS D'ASSAUT
--- =========================
+
 INSERT INTO products (nom, description, prix, stock, category) VALUES
 ('ak 47', 'tire tres fort', 299.99, 10, 'Fusil d''assaut'),
 ('f2000', 'Edouard', 199.99, 10, 'Fusil d''assaut'),
 ('famas', 'ça c un vrai', 2229.99, 50, 'Fusil d''assaut');
 
--- =========================
+
 -- EQUIPEMENTS
 -- Tout ce qui est accessoires / gear
--- =========================
+
 INSERT INTO products (nom, description, prix, stock, category) VALUES
 ('armure bekam', 'full netherite', 199.99, 5, 'Equipement'),
 ('flashbang', 'fait mal aux yeux', 20, 50, 'Equipement');
 
--- =========================
--- PRODUITS FRONTEND : AEG
--- =========================
+
+-- PRODUITS: AEG
+
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
 ('M4A1 CARBINE RIS', '', 289, 349, 10, 'AEG', 'aeg', 5, 'TOP VENTE', 1),
 ('AK-105 FULL METAL', '', 319, NULL, 8, 'AEG', 'aeg', 4, 'STOCK LIMITE', 0);
 
--- =========================
 -- PISTOLETS 
--- =========================
+
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
 ('G17 GEN5 GBB', '', 159, 199, 10, 'Pistolet GBB', 'gbb', 4, '-20%', 1);
 
--- =========================
 -- SNIPERS
--- =========================
+
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
 ('VSR-10 SNIPER', '', 399, NULL, 5, 'Fusil de precision', 'sniper', 5, 'NOUVEAU', 0);
 
--- =========================
 -- EQUIPEMENTS
--- =========================
+
 INSERT INTO products (nom, description, prix, old_price, stock, category, type, rating, tag, promo)
 VALUES 
 ('CASQUE FAST CAMO', '', 89, NULL, 20, 'Equipement', 'gear', 4, NULL, 0),
 ('GILET PLATE CARRIER', '', 129, 159, 15, 'Equipement', 'gear', 4, 'PROMO', 1);
 
--- =========================
+
 -- TABLE REVIEWS
--- =========================
+
 CREATE TABLE IF NOT EXISTS reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
