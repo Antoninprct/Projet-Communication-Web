@@ -48,9 +48,9 @@ function buildAuthHeaders() {
     return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// =======================
+
 // FORMAT PRIX
-// =======================
+
 function formatPrice(product) {
     const currentPrice = Number(product.price || 0).toFixed(2);
     const oldPriceHtml = product.oldPrice
@@ -60,9 +60,9 @@ function formatPrice(product) {
     return `<span class="product-price">${currentPrice} EUR</span>${oldPriceHtml}`;
 }
 
-// =======================
+
 // FILTRAGE
-// =======================
+
 function getFilteredProducts() {
     return products.filter((product) => {
         const matchFilter =
@@ -81,9 +81,9 @@ function getFilteredProducts() {
     });
 }
 
-// =======================
+
 // RENDER PRODUITS
-// =======================
+
 function renderProducts() {
     const grid = document.getElementById("products-grid");
     if (!grid) return;
@@ -156,9 +156,9 @@ async function refreshUI() {
     }
 }
 
-// =======================
+
 // TOAST
-// =======================
+
 function showToast(message, iconClass) {
     const toast = document.getElementById("toast-cart");
     if (!toast) return;
@@ -173,9 +173,9 @@ function showToast(message, iconClass) {
     }, 2200);
 }
 
-// =======================
+
 // EVENTS
-// =======================
+
 function bindEvents() {
     const searchInput = document.getElementById("searchInput");
     const filterButtons = document.querySelectorAll(".filter-btn");
@@ -215,9 +215,9 @@ function bindEvents() {
     });
 }
 
-// =======================
+
 // LOAD PRODUITS
-// =======================
+
 async function loadProducts() {
     const grid = document.getElementById("products-grid");
     if (!grid) return;
@@ -236,9 +236,9 @@ async function loadProducts() {
     }
 }
 
-// =======================
+
 // INIT
-// =======================
+
 document.addEventListener("DOMContentLoaded", () => {
     const adminActions = document.getElementById("admin-actions");
     const role = getAuthRole();
